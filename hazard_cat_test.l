@@ -4,6 +4,7 @@ letterCap [A-Z]
 varName ((letter|letterCap)+(digit*))
 blankNewLine ([ \n]+)
 statement (([^ \n]+);)
+statementEnd ;
 assignment =
 equals ==
 larger >
@@ -29,9 +30,11 @@ comment [#][^\n]*
 optionalBlank ([ ]*)
 optionalNewLine([\n]*)
 optionalNewOrBlank ([ ]*|[\n]*)
+mandBlank([ ]+)
 innerParam (([^ \n]+),)
 endParam (([^ \n]+))
-paramList ((optionalNewLine)(optionalBlank)((innerParam)*(optionalBlank))*(endParam)+(optionalBlank)*)
+paramList ((optionalNewOrBlank*)((innerParam)*(optionalNewOrBlank)*)*(endParam)+(optionalNewOrBlank)*)
 %%
+((let)(mandBlank)(varName)(statementEnd))
 (func([ ]+)main([ ]*)(parantOpen)(paramList)(parantClose))
 %%
