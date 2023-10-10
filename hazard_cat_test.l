@@ -1,13 +1,37 @@
 digit [0-9]
-let [a-z]
-letCap [A-Z]
+letter [a-z]
+letterCap [A-Z]
+varName ((letter|letterCap)+(digit*))
 blankNewLine ([ \n]+)
 statement (([^ \n]+);)
-comment [#][^\n]
+assignment =
+equals ==
+larger >
+smaller <
+largerEqual >=
+smallerEqual <=
+increment ++
+decrement --
+plusEqual +=
+minusEqual -=
+timesEqual *=
+divideEqual /=
+modEqual %=
+parantOpen (
+parantClose )
+curlyOpen {
+curlyClose }
+arrBrackOpen [
+arrBrackClose ]
+stringOpen "
+stringClose "
+comment [#][^\n]*
 optionalBlank ([ ]*)
+optionalNewLine([\n]*)
+optionalNewOrBlank ([ ]*|[\n]*)
 innerParam (([^ \n]+),)
 endParam (([^ \n]+))
-paramList ((optionalBlank)((innerParam)(optionalBlank))*,(endParam)+(optionalBlank))
+paramList ((optionalNewLine)(optionalBlank)((innerParam)*(optionalBlank))*(endParam)+(optionalBlank)*)
 %%
-(func([ ])main([ ])[(])
+(func([ ]+)main([ ]*)(parantOpen)(paramList)(parantClose))
 %%
