@@ -12,9 +12,9 @@ larger >
 smaller <
 largerEqual >=
 smallerEqual <=
-increment ++
+increment \+\+
 decrement --
-plusEqual +=
+plusEqual \+=
 minusEqual -=
 timesEqual *=
 divideEqual /=
@@ -27,6 +27,7 @@ arrBrackOpen [[]
 arrBrackClose []]
 stringOpen "
 stringClose "
+string ("[.]+")
 comment [#][^\n]*
 optionalBlank ([ ]*)
 optionalNewLine([\n]*)
@@ -36,9 +37,9 @@ innerParam (([^ \n]+),)
 endParam (([^ \n]+))
 paramList ((optionalNewOrBlank*)((innerParam)*(optionalNewOrBlank)*)*(endParam)+(optionalNewOrBlank)*)
 varDeclaration ((let)(mandBlank)({varName})(optionalNewOrBlank)(statementEnd))
-constDeclaration
+constDecAssign ((const)(mandBlank)({varName})(optionalBlank)(assignment)()(optionalBlank)(statementEnd))
 %%
-main() {yylex();}
 varDeclaration {int yytext;} 
 (func([ ]+)main([ ]*)(parantOpen)(paramList)(parantClose))
+main() {yylex();}
 %%
