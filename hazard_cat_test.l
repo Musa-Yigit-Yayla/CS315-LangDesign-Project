@@ -1,4 +1,5 @@
 digit [0-9]
+negativeOptional ([-]+)
 letter [a-z]
 letterCap [A-Z]
 varName ((letter|letterCap)+(digit*))
@@ -18,12 +19,12 @@ minusEqual -=
 timesEqual *=
 divideEqual /=
 modEqual %=
-parantOpen (
-parantClose )
-curlyOpen {
-curlyClose }
-arrBrackOpen [
-arrBrackClose ]
+parantOpen [(]
+parantClose [)]
+curlyOpen [{]
+curlyClose [}]
+arrBrackOpen [[]
+arrBrackClose []]
 stringOpen "
 stringClose "
 comment [#][^\n]*
@@ -34,7 +35,10 @@ mandBlank([ ]+)
 innerParam (([^ \n]+),)
 endParam (([^ \n]+))
 paramList ((optionalNewOrBlank*)((innerParam)*(optionalNewOrBlank)*)*(endParam)+(optionalNewOrBlank)*)
+varDeclaration ((let)(mandBlank)({varName})(optionalNewOrBlank)(statementEnd))
+constDeclaration
 %%
-((let)(mandBlank)(varName)(statementEnd))
+main() {yylex();}
+varDeclaration {int yytext;} 
 (func([ ]+)main([ ]*)(parantOpen)(paramList)(parantClose))
 %%
