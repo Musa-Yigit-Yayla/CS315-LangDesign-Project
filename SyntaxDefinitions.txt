@@ -1,0 +1,7 @@
+Important! (This list may lack some predefined rules we already have written to the lex file)
+*A variable name must start with a letter and may contain digit(s) as a suffix (optional).
+*Statements must terminate with a semicolon(;)
+*Variable declaration, assignment or a combination of them is required to be a single line followed by a semicolon ( optionally
+ we can have the semicolon at a below line)
+*xor is ^^
+*pow is ^

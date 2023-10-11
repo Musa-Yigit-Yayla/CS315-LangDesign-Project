@@ -9,6 +9,11 @@ statement (([^ \n]+);)
 statementEnd ;
 assignment =
 equals ==
+notEquals !=
+not !
+or \|\|
+and &&
+xor \^\^
 larger >
 smaller <
 largerEqual >=
@@ -20,6 +25,14 @@ minusEqual -=
 timesEqual *=
 divideEqual /=
 modEqual %=
+sum \+
+subtract -
+multiply \*
+divide /
+mod %
+pow \^\^
+arithmeticOperator (sum|subtract|multiply|divide|mod|pow)
+boolOperator (not|or|and|xor)
 parantOpen [(]
 parantClose [)]
 curlyOpen [{]
