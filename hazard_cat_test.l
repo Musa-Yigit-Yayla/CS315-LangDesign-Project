@@ -1,8 +1,9 @@
 digit [0-9]
-negativeOptional ([-]+)
+negativeOptional ([-]?)
 letter [a-z]
 letterCap [A-Z]
 varName ((letter|letterCap)+(digit*))
+arrName ((letter|letterCap)+(digit*))
 blankNewLine ([ \n]+)
 statement (([^ \n]+);)
 statementEnd ;
@@ -27,7 +28,7 @@ arrBrackOpen [[]
 arrBrackClose []]
 stringOpen "
 stringClose "
-string ("[.]+")
+stringConst ("[.]+")
 comment [#][^\n]*
 optionalBlank ([ ]*)
 optionalNewLine([\n]*)
@@ -37,9 +38,14 @@ innerParam (([^ \n]+),)
 endParam (([^ \n]+))
 paramList ((optionalNewOrBlank*)((innerParam)*(optionalNewOrBlank)*)*(endParam)+(optionalNewOrBlank)*)
 varDeclaration ((let)(mandBlank)({varName})(optionalNewOrBlank)(statementEnd))
-constDecAssign ((const)(mandBlank)({varName})(optionalBlank)(assignment)()(optionalBlank)(statementEnd))
+varAssign (varName)(assignment)(optionalBlank)(digit)+(optionalNewOrBlank)(statementEnd)
+varDecAssign ((let)(mandBlank)(varAssign))
+constIntDecAssign ((const)(mandBlank)({varName})(optionalBlank)(assignment)(negativeOptional)(digit+)(optionalNewOrBlank)(statementEnd))
+constStringDecAssign (string)(mandBlank)(varName)(optionalBlank)(assignment)(optionalBlank)(stringConst)(optionalNewOrBlank)(statementEnd)
+arrKeyword list
+arrDeclaration ((arrKeyWord)(mandBlank)(arrName)(optionalNewOrBlank)(statementEnd)) 
 %%
+main() {yylex();}
 varDeclaration {int yytext;} 
 (func([ ]+)main([ ]*)(parantOpen)(paramList)(parantClose))
-main() {yylex();}
 %%
