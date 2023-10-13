@@ -1,3 +1,5 @@
+%option main
+
 digit [0-9]
 negativeOptional ([-]?)
 letter [a-z]
@@ -58,7 +60,19 @@ constStringDecAssign (string)({mandBlank})({varName})({optionalBlank})({assignme
 arrKeyword list
 arrDeclaration (({arrKeyWord})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd})) 
 %%
-main() {yylex();}
-varDeclaration {int yytext;} 
-(func([ ]+)main([ ]*)(parantOpen)(paramList)(parantClose))
+{digit} printf(" DIGIT ");
+{letter|letterCap} printf(" LETTER ");
+{varName} printf(" VAR_NAME ");
+{statementEnd} printf(" SEMICOL ");
+{assignment} printf(" ASSIGNMENT ");
+{equals} printf(" EQUALS ");
+{notEquals} printf(" NOT_EQUALS ");
+{not} printf(" NOT ");
+{or} printf(" OR ");
+{and} printf(" AND ");
+{XOR} PRİNTF(" XOR ");
+{larger} printf(" LARGER ");
+{smaller} printf(" SMALLER ");
+{largerEqual} printf("LARGER_EQUAL");
+{smallerEqual} printf(" SMALLER_EQUAL ");
 %%
