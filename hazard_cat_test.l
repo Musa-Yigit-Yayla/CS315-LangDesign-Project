@@ -81,7 +81,7 @@ arraySizeSpecifier ~
 {largerEqual} printf(" LARGER_EQUAL ");
 {smallerEqual} printf(" SMALLER_EQUAL ");
 {increment} printf(" INCREMENT ");
-(decrement) printf(" DECREMENT ");
+{decrement} printf(" DECREMENT ");
 {plusEqual} printf(" PLUS_ASSIGN");
 {minusEqual} printf(" SUBTRACT_ASSIGN ");
 {timesEqual} printf(" MULTIPLY_ASSIGN ");
