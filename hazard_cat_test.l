@@ -33,7 +33,6 @@ multiply \*
 divide /
 mod %
 pow \^\^
-comma ,
 arithmeticOperator ({sum}|{subtract}|{multiply}|{divide}|{mod}|{pow})
 boolOperator ({not}|{or}|{and}|{xor})
 parantOpen [(]
@@ -47,6 +46,7 @@ stringClose "
 stringConst ("[.]+")
 comment ([#]([^(\n)]*))|([#])
 newLine (\n)
+comma ,
 optionalBlank ([ ]*)
 optionalNewLine([\n]*)
 optionalNewOrBlank ([ ]*|[\n]*)
@@ -60,7 +60,10 @@ varDecAssign ((let)({mandBlank})({varAssign}))
 constIntDecAssign ((const)({mandBlank})({varName})({optionalBlank})({assignment})({negativeOptional})({digit}+)({optionalNewOrBlank})({statementEnd}))
 constStringDecAssign (string)({mandBlank})({varName})({optionalBlank})({assignment})({optionalBlank})({stringConst})({optionalNewOrBlank})({statementEnd})
 arrKeyword list
-arrDec (({arrKeyWord})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd})) 
+arrDec (({arrKeyWord})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd}))
+intKeyword let
+stringKeyword string
+arraySizeSpecifier ~ 
 %%
 {digit} printf(" DIGIT ");
 {letter|letterCap} printf(" LETTER ");
@@ -102,4 +105,8 @@ arrDec (({arrKeyWord})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {comment} printf(" COMMENT ");
 {newLine} printf(" NEWLINE ");
 {comma} printf(" COMMA ");
+{intKeyword} printf(" LET_INT ");
+{stringKeyword} printf(" LET_STRING ");
+{arrKeyWord} printf(" LET_LIST ");
+{arraySizeSpecifier} printf(" LIST_SIZE_SPECIFIER ");
 %%
