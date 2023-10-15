@@ -1,6 +1,6 @@
 #until -1 store and add and multiply this numbers
 
-string prompt = "Give me numbers and i will add and multiply them seperately. Enter -1 for me to start calculating and terminate: "
+string prompt = "Give me numbers and i will add and multiply them seperately. Enter -1 for me to start calculating and terminate: ";
 
 print<<prompt;
 read >>x;
@@ -22,7 +22,7 @@ print<< addi;
 print_line<<msg3;
 print<<multip;
 
-string prompt2= "Would u like to try again? If yes put any number, if no press -1: "
+string prompt2= "Would u like to try again? If yes put any number, if no press -1: ";
 
 print << prompt2;
 read>>x;
