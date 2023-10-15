@@ -83,11 +83,11 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {for} {printf(" FOR ");}
 {while} {printf(" WHILE ");}
 {returnKeyword} {printf(" RETURN ");}
-printCall {printf(" PRINT ");}
-printLineCall {printf(" PRINT_LINE ");}
-readCall {printf(" READ ");}
-printOperator {printf(" PRINT_OP ");}
-readOperator {printf(" READ_OP ");}
+{printCall} {printf(" PRINT ");}
+{printLineCall} {printf(" PRINT_LINE ");}
+{readCall} {printf(" READ ");}
+{printOperator} {printf(" PRINT_OP ");}
+{readOperator} {printf(" READ_OP ");}
 {statementEnd} {printf(" SEMICOL ");}
 {assignment} {printf(" ASSIGNMENT ");}
 {equals} {printf(" EQUALS ");}
