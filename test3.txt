@@ -3,12 +3,12 @@
 string prompt= "Give me 2 lists and i will calculate how many elements from each list are reapeating. Please give 4 numbers with 4 enters in between for the first list: "
 
 print<< prompt;
-list a;
-list b;
+list a~4;
+list b~4;
 
 for(let i=0, i<4,i++){
 read>> x;
-a.addElement(x);
+a[i]=x;
 }
 
 string prompt2 = "Now List number 2: ";
@@ -19,7 +19,7 @@ let matching=0;
 for (let k=0, k<4,k++)
 {
 read >> y;
-b.addElemet(y)
+b[i]=y;
 }
 
 for(let i=0,i<4,i++){
