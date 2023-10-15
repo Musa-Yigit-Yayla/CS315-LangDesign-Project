@@ -33,12 +33,12 @@ decrement --
 plusEqual \+=
 minusEqual -=
 timesEqual \*=
-divideEqual /=
+divideEqual \/=
 modEqual %=
 sum \+
 subtract -
 multiply \*
-divide /
+divide \/
 mod %
 pow \^\^
 arithmeticOperator ({sum}|{subtract}|{multiply}|{divide}|{mod}|{pow})
@@ -49,8 +49,7 @@ curlyOpen [{]
 curlyClose [}]
 arrBrackOpen [[]
 arrBrackClose []]
-stringOpen "
-stringClose "
+stringOpenOrClose ["]
 stringConst ("[.]+")
 comment ([#]([^(\n)]*))|([#])
 newLine (\n)
@@ -111,8 +110,7 @@ arraySizeSpecifier ~
 {curlyClose} {printf(" CURLY_CLOSE ")};
 {arrBrackOpen} {printf(" ARR_BRACK_OPEN ")};
 {arrBrackClose} {printf(" ARR_BRACK_CLOSE ")};
-{stringOpen} {printf(" STRING_OPEN ")};
-{stringClose} {printf(" STRING_CLOSE ")};
+{stringOpenOrClose} {printf(" STRING_OPEN_OR_CLOSE ")};
 {stringConst} {printf(" STRING_CONST ")};
 {comment} {printf(" COMMENT ")};
 {newLine} {printf(" NEWLINE ")};
