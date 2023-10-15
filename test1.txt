@@ -1,13 +1,13 @@
 #"number of times program should calculate the mod of given two numbers."
 
-string times = "Enter number of exercies: "
+string times = "Enter number of exercies: ";
 
 print << times;
 
 read>>x;
-string first ="first integer please: "
-string second = "second integer please: "
-string theirMod = "their mod is: "
+string first ="first integer please: ";
+string second = "second integer please: ";
+string theirMod = "their mod is: ";
 for(let a=0, a<x;a++){
 	print<< first;
 	read>> y;

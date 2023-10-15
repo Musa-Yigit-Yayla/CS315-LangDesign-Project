@@ -6,17 +6,17 @@ read >>z;
 string nonzero= "print nonzero numbers only";
 
 while(x==0){
-print << nonzero
+print << nonzero;
 read>>x;
 }
 
 while(y==0){
-print << nonzero
+print << nonzero;
 read>>y;
 }
 
 while(z==0){
-print << nonzero
+print << nonzero;
 read>>z;
 }
 
