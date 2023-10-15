@@ -13,8 +13,13 @@ returnKeyword return
 stringKeyword string
 intKeyword let
 constIntKeyword const
+printLineCall (print_line)
+printCall (print)
+readCall (read);
 letter [a-z]
 letterCap [A-Z]
+printOperator (<<)
+readOperator (>>)
 blankNewLine ([ \n]+)
 statement (([^ \n]+);)
 statementEnd ;
@@ -78,6 +83,11 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {for} {printf(" FOR ");}
 {while} {printf(" WHILE ");}
 {returnKeyword} {printf(" RETURN ");}
+printCall {printf(" PRINT ");}
+printLineCall {printf(" PRINT_LINE ");}
+readCall {printf(" READ ");}
+printOperator {printf(" PRINT_OP ");}
+readOperator {printf(" READ_OP ");}
 {statementEnd} {printf(" SEMICOL ");}
 {assignment} {printf(" ASSIGNMENT ");}
 {equals} {printf(" EQUALS ");}
