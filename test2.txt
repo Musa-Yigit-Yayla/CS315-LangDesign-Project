@@ -1,0 +1,48 @@
+#until -1 store and add and multiply this numbers
+
+string prompt = "Give me numbers and i will add and multiply them seperately. Enter -1 for me to start calculating and terminate: "
+
+print<<prompt;
+read >>x;
+let addi=0;
+let multip=1;
+while(x!=-1){
+	addi+=x;
+	multip*=x;
+	read>>x;
+}
+
+string msg = "I added and multiplied everything.";
+string msg2= "Addition of alllll these numbers is: ";
+string msg3 = "Multiplication of allll these numbers is: ";
+
+print_line<<msg;
+print_line << msg2;
+print<< addi;
+print_line<<msg3;
+print<<multip;
+
+string prompt2= "Would u like to try again? If yes put any number, if no press -1: "
+
+print << prompt2;
+read>>x;
+if(x!=-1){
+let addi=0;
+let multip=1;
+while(x!=-1){
+	addi+=x;
+	multip*=x;
+	read>>x;
+}
+
+string msg = "I added and multiplied everything.";
+string msg2= "Addition of alllll these numbers is: ";
+string msg3 = "Multiplication of allll these numbers is: ";
+
+print_line<<msg;
+print_line << msg2;
+print<< addi;
+print_line<<msg3;
+print<<multip;
+
+}

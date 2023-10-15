@@ -1,0 +1,25 @@
+string prompt = "enter x,y,z";
+print << prompt;
+read >>x;
+read >>y;
+read >>z;
+string nonzero= "print nonzero numbers only";
+
+while(x==0){
+print << nonzero
+read>>x;
+}
+
+while(y==0){
+print << nonzero
+read>>y;
+}
+
+while(z==0){
+print << nonzero
+read>>z;
+}
+
+let answ=x*y*z*;
+
+print<< answ;

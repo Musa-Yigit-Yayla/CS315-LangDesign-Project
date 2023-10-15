@@ -1,0 +1,25 @@
+
+list one={5,0,3,-7};
+list two = {9,-2,-1};
+for(let a=0,a<one~size,a++){
+	for(let b=0, b<two~size,b++){
+		let c=func foo(a,b);
+		print<<x;
+	}
+}
+
+
+func foo (p,q)
+{
+	print << "function name is: ";
+	print<<"foo";
+	print_line<< "parameter names are: ";
+	print<<'p'<<' '<<'q';
+	print_line<<"their values are: ";
+	print<<p;
+	print<<q;
+	if(p<q){
+	return q;
+	}
+	else return p;
+}
