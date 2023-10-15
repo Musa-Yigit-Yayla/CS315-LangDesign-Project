@@ -1,6 +1,4 @@
-
-
-#number of times program should calculate the mod of given two numbers.
+#"number of times program should calculate the mod of given two numbers."
 
 string times = "Enter number of exercies: "
 
