@@ -1,6 +1,7 @@
 %option main
 
 digit [0-9]
+number ({digit}+)
 negativeOptional ([-]?)
 for for
 while while
@@ -40,7 +41,7 @@ subtract -
 multiply \*
 divide \/
 mod %
-pow \^\^
+pow \^
 arithmeticOperator ({sum}|{subtract}|{multiply}|{divide}|{mod}|{pow})
 boolOperator ({not}|{or}|{and}|{xor})
 parantOpen [(]
@@ -54,12 +55,12 @@ stringConst ("[.]+")
 comment ([#]([^(\n)]*))|([#])
 newLine (\n)
 comma ,
+arraySizeSpecifier ~ 
 optionalBlank ([ ]*)
 optionalNewLine([\n]*)
 optionalNewOrBlank ([ ]*|[\n]*)
 mandBlank([ ]+)
 varName (({letter}|{letterCap})+({digit}*))
-arrName (({letter}|{letterCap})+({digit}*))
 innerParam ({varName},)
 endParam ({varName})
 paramList (({optionalNewOrBlank}*)(({innerParam})*({optionalNewOrBlank})*)*({endParam})+({optionalNewOrBlank})*)
@@ -69,16 +70,14 @@ varDecAssign ((let)({mandBlank})({varAssign}))
 constIntDecAssign ((const)({mandBlank})({varName})({optionalBlank})({assignment})({negativeOptional})({digit}+)({optionalNewOrBlank})({statementEnd}))
 constStringDecAssign (string)({mandBlank})({varName})({optionalBlank})({assignment})({optionalBlank})({stringConst})({optionalNewOrBlank})({statementEnd})
 arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd}))
-arraySizeSpecifier ~ 
 %%
-{digit} {printf(" DIGIT ");}
+{number} {printf(" NUMBER ");}
 {ifKeyword} {printf(" IF ");}
 {elseIfKeyword} {printf(" ELSE_IF ");}
 {elseKeyword} {printf(" ELSE ");}
 {for} {printf(" FOR ");}
 {while} {printf(" WHILE ");}
 {returnKeyword} {printf(" RETURN ");}
-{varName} {printf(" VAR_NAME ");}
 {statementEnd} {printf(" SEMICOL ");}
 {assignment} {printf(" ASSIGNMENT ");}
 {equals} {printf(" EQUALS ");}
@@ -119,4 +118,5 @@ arraySizeSpecifier ~
 {stringKeyword} {printf(" LET_STRING ");}
 {arrKeyword} {printf(" LET_LIST ");}
 {arraySizeSpecifier} {printf(" LIST_SIZE_SPECIFIER ");}
+{varName} {printf(" VAR_NAME ");}
 %%
