@@ -5,7 +5,7 @@ negativeOptional ([-]?)
 for for
 while while
 if if
-elseIf elif
+elseIf else if
 else else
 arrKeyword list
 stringKeyword string
