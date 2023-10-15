@@ -47,6 +47,7 @@ multiply \*
 divide \/
 mod %
 pow \^
+newLine (\n)
 arithmeticOperator ({sum}|{subtract}|{multiply}|{divide}|{mod}|{pow})
 boolOperator ({not}|{or}|{and}|{xor})
 parantOpen [(]
@@ -56,9 +57,9 @@ curlyClose [}]
 arrBrackOpen [[]
 arrBrackClose []]
 stringOpenOrClose ["]
-stringConst ("[.]+")
-comment ([#]([^(\n)]*)(\n))
-newLine (\n)
+stringInnerStatement (((([.]*)({newLine})*))*)
+stringConst ("({stringInnerStatement})")
+comment ([#](([^(\n)])*)(\n))
 comma ,
 arraySizeSpecifier ~ 
 optionalBlank ([ ]*)
