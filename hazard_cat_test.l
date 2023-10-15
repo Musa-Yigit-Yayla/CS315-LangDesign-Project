@@ -2,10 +2,17 @@
 
 digit [0-9]
 negativeOptional ([-]?)
+for for
+while while
+if if
+elseIf elif
+else else
+arrKeyword list
+stringKeyword string
+intKeyword let
+constIntKeyword const
 letter [a-z]
 letterCap [A-Z]
-varName (({letter}|{letterCap})+({digit}*))
-arrName (({letter}|{letterCap})+({digit}*))
 blankNewLine ([ \n]+)
 statement (([^ \n]+);)
 statementEnd ;
@@ -51,22 +58,25 @@ optionalBlank ([ ]*)
 optionalNewLine([\n]*)
 optionalNewOrBlank ([ ]*|[\n]*)
 mandBlank([ ]+)
+varName (({letter}|{letterCap})+({digit}*))
+arrName (({letter}|{letterCap})+({digit}*))
 innerParam ({varName},)
-endParam (varName)
+endParam ({varName})
 paramList (({optionalNewOrBlank}*)(({innerParam})*({optionalNewOrBlank})*)*({endParam})+({optionalNewOrBlank})*)
 varDeclaration ((let)({mandBlank})({varName})({optionalNewOrBlank})({statementEnd}))
 varAssign ({varName})({assignment})({optionalBlank})({digit})+({optionalNewOrBlank})({statementEnd})
 varDecAssign ((let)({mandBlank})({varAssign}))
 constIntDecAssign ((const)({mandBlank})({varName})({optionalBlank})({assignment})({negativeOptional})({digit}+)({optionalNewOrBlank})({statementEnd}))
 constStringDecAssign (string)({mandBlank})({varName})({optionalBlank})({assignment})({optionalBlank})({stringConst})({optionalNewOrBlank})({statementEnd})
-arrKeyword list
-arrDec (({arrKeyWord})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd}))
-intKeyword let
-stringKeyword string
+arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd}))
 arraySizeSpecifier ~ 
 %%
 {digit} printf(" DIGIT ");
-{letter|letterCap} printf(" LETTER ");
+{if} printf(" IF ");
+{elseIf} printf(" ELSE_IF ");
+{else} printf(" ELSE ");
+{for} printf(" FOR ");
+{while} printf(" WHILE ");
 {varName} printf(" VAR_NAME ");
 {statementEnd} printf(" SEMICOL ");
 {assignment} printf(" ASSIGNMENT ");
@@ -107,6 +117,6 @@ arraySizeSpecifier ~
 {comma} printf(" COMMA ");
 {intKeyword} printf(" LET_INT ");
 {stringKeyword} printf(" LET_STRING ");
-{arrKeyWord} printf(" LET_LIST ");
+{arrKeyword} printf(" LET_LIST ");
 {arraySizeSpecifier} printf(" LIST_SIZE_SPECIFIER ");
 %%
