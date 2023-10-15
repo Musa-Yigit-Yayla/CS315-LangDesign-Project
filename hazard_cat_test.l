@@ -16,6 +16,7 @@ constIntKeyword const
 printLineCall (print_line)
 printCall (print)
 readCall (read)
+functionKeyword (func)
 letter [a-z]
 letterCap [A-Z]
 printOperator (<<)
@@ -83,6 +84,7 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {elseKeyword} {printf(" ELSE ");}
 {for} {printf(" FOR ");}
 {while} {printf(" WHILE ");}
+{func} {printf(" FUNC ");}
 {returnKeyword} {printf(" RETURN ");}
 {printCall} {printf(" PRINT ");}
 {printLineCall} {printf(" PRINT_LINE ");}
