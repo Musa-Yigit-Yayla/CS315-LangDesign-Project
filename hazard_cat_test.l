@@ -4,10 +4,11 @@ digit [0-9]
 negativeOptional ([-]?)
 for for
 while while
-if if
-elseIf else if
-else else
+ifKeyword if
+elseIfKeyword (else if)
+elseKeyword else
 arrKeyword list
+returnKeyword return
 stringKeyword string
 intKeyword let
 constIntKeyword const
@@ -72,11 +73,12 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 arraySizeSpecifier ~ 
 %%
 {digit} printf(" DIGIT ");
-{if} printf(" IF ");
-{elseIf} printf(" ELSE_IF ");
-{else} printf(" ELSE ");
+{ifKeyword} printf(" IF ");
+{elseIfKeyword} printf(" ELSE_IF ");
+{elseKeyword} printf(" ELSE ");
 {for} printf(" FOR ");
 {while} printf(" WHILE ");
+{returnKeyword} printf(" RETURN ");
 {varName} printf(" VAR_NAME ");
 {statementEnd} printf(" SEMICOL ");
 {assignment} printf(" ASSIGNMENT ");
@@ -85,7 +87,7 @@ arraySizeSpecifier ~
 {not} printf(" NOT ");
 {or} printf(" OR ");
 {and} printf(" AND ");
-{XOR} PRİNTF(" XOR ");
+{xor} printf(" XOR ");
 {larger} printf(" LARGER ");
 {smaller} printf(" SMALLER ");
 {largerEqual} printf(" LARGER_EQUAL ");
@@ -95,7 +97,7 @@ arraySizeSpecifier ~
 {plusEqual} printf(" PLUS_ASSIGN");
 {minusEqual} printf(" SUBTRACT_ASSIGN ");
 {timesEqual} printf(" MULTIPLY_ASSIGN ");
-{divideEqual} printf(" DIVIDE_ASSIGN");
+{divideEqual} printf(" DIVIDE_ASSIGN ");
 {modEqual} printf(" REMAINDER_ASSIGN ");
 {sum} printf(" PLUS ");
 {subtract} printf(" SUBTRACT ");
