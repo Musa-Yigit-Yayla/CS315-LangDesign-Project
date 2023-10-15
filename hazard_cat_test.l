@@ -84,7 +84,7 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {elseKeyword} {printf(" ELSE ");}
 {for} {printf(" FOR ");}
 {while} {printf(" WHILE ");}
-{func} {printf(" FUNC ");}
+{functionKeyword} {printf(" FUNC ");}
 {returnKeyword} {printf(" RETURN ");}
 {printCall} {printf(" PRINT ");}
 {printLineCall} {printf(" PRINT_LINE ");}
