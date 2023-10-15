@@ -57,7 +57,7 @@ arrBrackOpen [[]
 arrBrackClose []]
 stringOpenOrClose ["]
 stringConst ("[.]+")
-comment ([#]([^(\n)]*))|([#])
+comment ([#]([^(\n)]*)(\n))
 newLine (\n)
 comma ,
 arraySizeSpecifier ~ 
