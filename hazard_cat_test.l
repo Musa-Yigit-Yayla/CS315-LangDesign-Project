@@ -15,7 +15,7 @@ intKeyword let
 constIntKeyword const
 printLineCall (print_line)
 printCall (print)
-readCall (read);
+readCall (read)
 letter [a-z]
 letterCap [A-Z]
 printOperator (<<)
