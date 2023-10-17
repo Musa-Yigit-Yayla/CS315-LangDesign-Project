@@ -1,4 +1,10 @@
-#"number of times program should calculate the mod of given two numbers."
+
+
+#number of times program should calculate the mod of given two numbers.
+
+foo(y,z){
+	return y%z;
+}
 
 string times = "Enter number of exercies: ";
 
@@ -8,15 +14,13 @@ read>>x;
 string first ="first integer please: ";
 string second = "second integer please: ";
 string theirMod = "their mod is: ";
-for(let a=0, a<x;a++){
-	print<< first;
-	read>> y;
-	print_line<< second;
-	read>>z;
-	print<< theirMod;
-	print<< foo(y,z);
+for(let a=0; a < x; a++){
+	print << first;
+	read >> y;
+	print_line << second;
+	print << "enter z:";
+	read >> z;
+	print_line << theirMod;
+	print << foo(y,z);
 }
 
-foo(y,z){
-	return y%z;
-}

@@ -1,10 +1,24 @@
 
-list one={5,0,3,-7};
-list two = {9,-2,-1};
-for(let a=0,a<one~size,a++){
-	for(let b=0, b<two~size,b++){
-		let c=func foo(a,b);
-		print<<x;
+
+let listSize1 = 4;
+let listSize2 = 3;
+
+list arr1~listSize1;
+list arr2~listSize2;
+
+arr1[0] = 5;
+arr1[1] = 0;
+arr1[2] = 3;
+arr1[3] = -7;
+
+arr2[0] = 3;
+arr2[1] = 242;
+arr2[2] = 1312;
+
+for(let a=0; a < listSize1; a++){
+	for(let b=0; b< listSize2,b++){
+		let c= foo(a,b);
+		print << x;
 	}
 }
 
@@ -14,12 +28,14 @@ func foo (p,q)
 	print << "function name is: ";
 	print<<"foo";
 	print_line<< "parameter names are: ";
-	print<<'p'<<' '<<'q';
-	print_line<<"their values are: ";
-	print<<p;
-	print<<q;
-	if(p<q){
+	print << "p q";
+	print_line <<"their values are: ";
+	print << p;
+	print << q;
+	if(p < q){
 	return q;
 	}
-	else return p;
+	else{
+	 return p;
+	}
 }
