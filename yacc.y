@@ -45,9 +45,9 @@ cond_statement: If_statement
         | Else_If_statement
         | Else_statement;
 
-If_statement: IF LP exprs RP LC statements RC
-Else_If_statement: If_statement ELSE_IF LP exprs RP LC statements RC;
-Else_statement: If_statement ELSE LC statements RC;
+If_statement: IF LP expr RP LC statements RC;
+Else_If_statement: If_statement ELSE_IF LP expr RP LC statements RC;
+Else_statement: If_statement ELSE LC statements RC
         | If_statement Else_If_statement ELSE LC statements RC;
 
 // loops
@@ -86,7 +86,7 @@ insideOFList: VAR_NAME COMMA insideOFList
         | CONSTANT
         | CONST COMMA insideOFList;
 
-arraySizeSpecifier : ARR_size
+arraySizeSpecifier : ARR_size;
 
 // functions
 
@@ -103,7 +103,7 @@ expr: arithmetic_op
         | expr compare expr;
 
 ???????????????????????????????????????
-parameters: int VAR_NAME | COMMA parameters
+parameters: int VAR_NAME | COMMA parameters;
 
 //scanner
 read: READ READ_OP expr;
