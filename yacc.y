@@ -180,7 +180,22 @@ print_line: PRINT_LN;
 
 comment: COMMENT expr;
 
+%%
+#include "lex.yy.c"
 
+// report errors
+void yyerror(char *s) 
+{
+  fprintf(stderr, "syntax error at line: %d %s\n", yylineno, s);
+}
+
+int main(void){
+	//#if YYDEBUG
+	//	yydebug = 1;
+	//#endif
+	yyparse();
+	if(yynerrs < 1) printf("there are no syntax errors!!\n");
+}
 
 
 
