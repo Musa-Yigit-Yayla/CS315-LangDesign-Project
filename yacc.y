@@ -11,7 +11,7 @@
 %token for while
 %token let
 %token varName constIntKeyword number
-%token func return
+%token func returnKeyword
 %token list
 // %token int? bnf 28
 %token readCall
@@ -40,7 +40,7 @@
 %%
 // programm beginning
 
-main: MAIN parantOpen parantClose curlyOpen program curlyClose;
+start: MAIN parantOpen parantClose curlyOpen program curlyClose;
 program: statements;
 statements: statement| statements statement;
 statement: cond_statement
@@ -86,7 +86,7 @@ var_Assign: varName assing_ops expr;
 var_dec_assign: let var_Assign;
 constIntKeyword_Int_Dec_Assign: constIntKeyword varName assignment expr;
 constIntKeyword_string_Dec_assign: constIntKeyword varName assignment string;
-return_statement: return expr;
+return_statement: returnKeyword expr;
 
 
 //arrays
