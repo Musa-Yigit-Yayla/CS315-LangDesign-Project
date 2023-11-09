@@ -96,7 +96,7 @@ readCall_sc: READ READ_OP expr;
 
 
 // functions
-func_call: FUNC VAR_NAME PARANT_OPEN expr PARANT_CLOSE;
+func_call: VAR_NAME PARANT_OPEN parameters PARANT_CLOSE;
 func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN expr CURLY_CLOSE;
 
 
@@ -161,10 +161,6 @@ assing_ops: PLUS_ASSIGN
         | REMAINDER_ASSIGN
         | MULTIPLY_ASSIGN
         |ASSIGNMENT;
-
-
-
-
 
 
 %%
