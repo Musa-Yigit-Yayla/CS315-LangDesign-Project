@@ -59,7 +59,7 @@ cond_statement: if_statement
 if_statement: IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
 Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
-        | if_statement Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE;
+        |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE;
 
 // loops
 loop: for_loop | while_loop;
@@ -74,6 +74,7 @@ single_statement: varDeclaration
         | var_Assign
         | constIntKeyword_Int_Dec_Assign
         | constIntKeyword_string_Dec_assign
+	| arr_Dec_init
 	| arr_Dec
 	| arr_INIT
         | print_st
@@ -85,9 +86,10 @@ varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER
         | LET_STRING VAR_NAME ASSIGNMENT STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
 
 var_Assign: VAR_NAME assing_ops VAR_NAME
-		|VAR_NAME assing_ops NUMBER;
+		|VAR_NAME assing_ops NUMBER
+		|VAR_NAME assing_ops STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
 
-constIntKeyword_Int_Dec_Assign: constIntKeyword VAR_NAME ASSIGNMENT VAR_NAME
+constIntKeyword_Int_Dec_Assign: constIntKeyword VAR_NAME ASSIGNMENT VAR_NAME|
 		constIntKeyword VAR_NAME ASSIGNMENT NUMBER;
 constIntKeyword_string_Dec_assign: constIntKeyword VAR_NAME ASSIGNMENT STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
 
@@ -102,16 +104,18 @@ readCall_sc: READ READ_OP NUMBER
 
 // functions
 func_call: VAR_NAME PARANT_OPEN parameters PARANT_CLOSE;
-func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN expr CURLY_CLOSE;
+
+func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN VAR_NAME CURLY_CLOSE
+	|FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN NUMBER CURLY_CLOSE;
 
 
 parameters: LET_INT VAR_NAME COMMA parameters
-		| LET_STRING VAR_NAME COMMA parameters
-		|/* empty */;
+		| LET_STRING VAR_NAME COMMA parameters;
+		//|/* empty */;
 
 expr: arithmetic_ops
         | bool_OPS
-        | VAR_NAME compare NUMBER;
+        | comparison;
 
 arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
                   | VAR_NAME arithmetic_op NUMBER
@@ -124,6 +128,10 @@ arithmetic_op: PLUS
         | REMAINDER
         | POW;
 
+comparison: VAR_NAME compare VAR_NAME
+                  | VAR_NAME compare NUMBER
+		|NUMBER compare NUMBER;
+
 compare: SMALLER
         | SMALLER_EQUAL
         | LARGER
@@ -133,7 +141,7 @@ compare: SMALLER
 
 bool_OPS:  VAR_NAME bool_OP VAR_NAME
                 | VAR_NAME bool_OP NUMBER;
-		| NUMBER bool_OPS NUMBER;
+		| NUMBER bool_OP NUMBER;
 
 bool_OP: NOT
         | OR
@@ -143,6 +151,7 @@ bool_OP: NOT
 comment_st: COMMENT;
 
 //arrays
+arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE;
 arr_Dec: LET_LIST VAR_NAME;
 arr_INIT: VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE;
 insideOFList: VAR_NAME COMMA insideOFList
@@ -150,7 +159,7 @@ insideOFList: VAR_NAME COMMA insideOFList
 	| NUMBER
         | NUMBER COMMA insideOFList;
 
-arraySizeSpecifier_op : LIST_SIZE_SPECIFIER;
+//arraySizeSpecifier_op : LIST_SIZE_SPECIFIER;
 
 Do_In_Loops: incremention
         | decremention 
