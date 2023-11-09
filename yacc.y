@@ -2,7 +2,7 @@
 %token if
 %token for while
 %token let
-%token varName const CONSTANT
+%token varName const number
 %token func return
 %token list
 // %token int? bnf 28
@@ -19,9 +19,9 @@
 %token readOperator printOperator
 %token smaller smallerEqual larger largerEqual equals notEquals
 %token increment decrement plusEqual minusEqual divideEqual timesEqual modEqual
-%token PLUS MINUS DIVIDE MULTIPLY POWER MODULO
+%token sum substract multiply divide mod pow
 %token not or and xor
-%token print PRINT_LN
+%token print printLineCall
 %token comment
 
 %nonassoc elseIfKeyword elseKeyword
@@ -79,12 +79,14 @@ const_Int_Dec_Assign: const varName assignment expr;
 const_string_Dec_assign: const varName assignment string;
 return_statement: return expr;
 
+constant: number;
+
 //arrays
 arr_Dec: list varName;
 arr_INIT: varName assignment curlyOpen insideOFList curlyClose;
 insideOFList: varName comma insideOFList
         | varName
-        | CONSTANT
+        | constant
         | const comma insideOFList;
 
 arraySizeSpecifier_op : arraySizeSpecifier;
@@ -100,7 +102,7 @@ exprs: expr | expr exprs
 expr: arithmetic_op
         | bool_OPS
         | varName
-        | CONSTANT
+        | constant
         | expr compare expr;
 
 parameters: let varName | comma parameters;
@@ -132,36 +134,13 @@ assing_ops: plusEqual
         | timesEqual
         |assignment;
 
-arithmetic_op: sum_op
-        | substract_op
-        | multiply_op
-        | divide_op
-        | mod_op
-        | pow_op;
+arithmetic_op: sum
+        | substract
+        | multiply
+        | divide
+        | mod
+        | pow;
 
-sum_op: varName PLUS varName 
-        | CONSTANT PLUS varName 
-        | CONSTANT PLUS CONSTANT;
-
-substract_op: varName MINUS varName 
-        | CONSTANT MINUS varName 
-        | CONSTANT MINUS CONSTANT;
-
-multiply_op: varName MULTIPLY varName 
-        | CONSTANT MULTIPLY varName 
-        | CONSTANT MULTIPLY CONSTANT;
-
-divide_op: varName DIVIDE varName 
-        | CONSTANT DIVIDE varName 
-        | CONSTANT DIVIDE CONSTANT;
-
-mod_op: varName MODULO varName 
-        | CONSTANT MODULO varName 
-        | CONSTANT MODULO CONSTANT;
-
-pow_op: varName POWER varName 
-        | CONSTANT POWER varName 
-        | CONSTANT POWER CONSTANT;
 
 bool_OPS: not_op
         | or_op
@@ -169,7 +148,7 @@ bool_OPS: not_op
         | xor_op;
 
 not_op: not varName 
-        | not CONSTANT
+        | not constant
         | not parantOpen expr parantClose;
 
 or_op: expr or expr;
