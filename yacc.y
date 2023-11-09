@@ -9,8 +9,8 @@
 //Tokens
 %token IF
 %token FOR WHILE
-%token LET_INT
-%token VAR_NAME constIntKeyword number
+%token LET_INT LET_STRING
+%token VAR_NAME constIntKeyword NUMBER NEWLINE
 %token FUNC RETURN
 %token LET_LIST
 // %token int? bnf 28
@@ -40,13 +40,16 @@
 %%
 // programm beginning
 
-start: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN program CURLY_CLOSE;
-program: statements;
+program: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE;
+
 statements: statement| statements statement;
+
 statement: cond_statement
 		| loop
 		| single_statement
-        | statement;
+        	| func_call
+		| func_def
+		| comment_st;
 
 //conditionals
 cond_statement: if_statement
@@ -60,34 +63,77 @@ Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
 
 // loops
 loop: for_loop | while_loop;
+
 for_loop: FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT expr SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE;
 while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE;
 
 conditions: VAR_NAME bool_OPS expr;
 
 single_statement: varDeclaration
-        | return_statement
-        | arr_Dec
         | var_Assign
         | constIntKeyword_Int_Dec_Assign
         | constIntKeyword_string_Dec_assign
-        | var_dec_assign
+	| arr_Dec
+	| arr_INIT
         | print_st
         | readCall_sc
-        | print_line_st
-        | func_call
-	|func_def
-        | COMMENT;
+        | print_line_st;
 
 varDeclaration: LET_INT VAR_NAME ASSIGNMENT expr
-        | LET_INT VAR_NAME ASSIGNMENT arithmetic_op;
+        | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST;
 
 var_Assign: VAR_NAME assing_ops expr;
-var_dec_assign: LET_INT var_Assign;
+
 constIntKeyword_Int_Dec_Assign: constIntKeyword VAR_NAME ASSIGNMENT expr;
 constIntKeyword_string_Dec_assign: constIntKeyword VAR_NAME ASSIGNMENT LET_LIST;
-return_statement: RETURN expr;
 
+
+print_st: PRINT PRINT_OP expr; 
+print_line_st: PRINT_LINE;
+
+//scanner
+readCall_sc: READ READ_OP expr;
+
+
+// functions
+func_call: FUNC VAR_NAME PARANT_OPEN expr PARANT_CLOSE;
+func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN expr CURLY_CLOSE;
+
+
+parameters: LET_INT VAR_NAME COMMA parameters
+		| LET_STRING VAR_NAME COMMA parameters
+		|/* empty */;
+
+expr: arithmetic_ops
+        | bool_OPS
+        | VAR_NAME compare expr;
+
+arithmetic_ops: VAR_NAME arithmetic_op expr
+                  | expr arithmetic_op expr;
+
+arithmetic_op: PLUS
+        | SUBTRACT
+        | MULTIPLY
+        | DIVIDE
+        | REMAINDER
+        | POW;
+
+compare: SMALLER
+        | SMALLER_EQUAL
+        | LARGER
+        | LARGER_EQUAL
+        | EQUALS
+        | NOT_EQUALS;
+
+bool_OPS:  VAR_NAME bool_OP expr
+                | VAR_NAME bool_OP VAR_NAME;
+
+bool_OP: NOT
+        | OR
+        | AND
+        | XOR;
+
+comment_st: COMMENT;
 
 //arrays
 arr_Dec: LET_LIST VAR_NAME;
@@ -98,31 +144,6 @@ insideOFList: VAR_NAME COMMA insideOFList
         | expr COMMA insideOFList;
 
 arraySizeSpecifier_op : LIST_SIZE_SPECIFIER;
-
-// functions
-
-func_call: FUNC VAR_NAME PARANT_OPEN expr PARANT_CLOSE;
-func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements return_statement CURLY_CLOSE;
-
-//expressions
-
-exprs: expr | expr exprs
-expr: arithmetic_op
-        | bool_OPS
-        | VAR_NAME
-        | expr compare expr;
-
-parameters: LET_INT VAR_NAME | COMMA parameters;
-
-//scanner
-readCall_sc: READ READ_OP expr;
-
-compare: SMALLER
-        | SMALLER_EQUAL
-        | LARGER
-        | LARGER_EQUAL
-        | EQUALS
-        | NOT_EQUALS;
 
 Do_In_Loops: incremention
         | decremention 
@@ -141,31 +162,10 @@ assing_ops: PLUS_ASSIGN
         | MULTIPLY_ASSIGN
         |ASSIGNMENT;
 
-arithmetic_op: PLUS
-        | SUBTRACT
-        | MULTIPLY
-        | DIVIDE
-        | REMAINDER
-        | POW;
 
 
-bool_OPS: not_op
-        | or_op
-        | and_op
-        | xor_op;
 
-not_op: NOT VAR_NAME 
-        | NOT expr
-        | NOT PARANT_OPEN expr PARANT_CLOSE;
 
-or_op: expr OR expr;
-and_op: expr AND expr;
-xor_op: expr XOR expr;
-
-print_st: PRINT PRINT_OP expr; 
-print_line_st: PRINT_LINE;
-
-comment_st: COMMENT expr;
 
 %%
 #include "lex.yy.c"
