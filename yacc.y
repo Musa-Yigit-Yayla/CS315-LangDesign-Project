@@ -24,8 +24,8 @@
 %token print PRINT_LN
 %token comment
 
-%nonassoc ELSE_if ELSE
-%nonassoc ELSE
+%nonassoc elseIfKeyword elseKeyword
+%nonassoc elseKeyword
 
 %start program
 
@@ -46,9 +46,9 @@ cond_statement: if_statement
         | Else_statement;
 
 if_statement: if parantOpen expr parantClose curlyOpen statements curlyClose;
-Else_if_statement: if_statement ELSE_if parantOpen expr parantClose curlyOpen statements curlyClose;
-Else_statement: if_statement ELSE curlyOpen statements curlyClose
-        | if_statement Else_if_statement ELSE curlyOpen statements curlyClose;
+Else_if_statement: if_statement elseIfKeyword parantOpen expr parantClose curlyOpen statements curlyClose;
+Else_statement: if_statement elseKeyword curlyOpen statements curlyClose
+        | if_statement Else_if_statement elseKeyword curlyOpen statements curlyClose;
 
 // loops
 loop: for_loop | while_loop;
