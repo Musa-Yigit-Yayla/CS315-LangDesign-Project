@@ -52,11 +52,10 @@ Else_statement: If_statement ELSE LC statements RC
 
 // loops
 loop: for | while;
-for: FOR LP VAR_NAME ASSIGN_EQ expr SC conditions SC Do_In_Loops LC statements RC;
+for: FOR LP LET VAR_NAME ASSIGN_EQ expr SC conditions SC Do_In_Loops LC statements RC;
 while: WHILE LP conditions RP LC statements RC;
 
 conditions: VAR_NAME bool_OPS expr;
-
 
 single_statement: varDeclaration
         | return_statement
@@ -102,7 +101,6 @@ expr: arithmetic_op
         | CONSTANT
         | expr compare expr;
 
-???????????????????????????????????????
 parameters: LET VAR_NAME | COMMA parameters;
 
 //scanner
