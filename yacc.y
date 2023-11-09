@@ -1,3 +1,14 @@
+%{
+	//#define YYDEBUG 1
+	#include "stdio.h"
+    void yyerror(char *);
+    extern int yylineno;
+    #include "y.tab.h"
+	int yylex(void);
+%}
+
+
+
 //Tokens
 %token if
 %token for while
@@ -37,7 +48,7 @@ program: statements;
 statements: statement| statements statement;
 statement: cond_statement
 		| loop
-		| single_st
+		| single_statement
         | statement;
 
 //conditionals
@@ -74,21 +85,20 @@ single_statement: varDeclaration
 varDeclaration: let varName assignment expr
         | let varName assignment arithmetic_op;
 
-var_Assign: varName assing_ops EXPR;
+var_Assign: varName assing_ops expr;
 var_dec_assign: let var_Assign;
 const_Int_Dec_Assign: const varName assignment expr;
 const_string_Dec_assign: const varName assignment string;
 return_statement: return expr;
 
-constant: number;
 
 //arrays
 arr_Dec: list varName;
 arr_INIT: varName assignment curlyOpen insideOFList curlyClose;
 insideOFList: varName comma insideOFList
         | varName
-        | constant
-        | const comma insideOFList;
+	| expr
+        | expr comma insideOFList;
 
 arraySizeSpecifier_op : arraySizeSpecifier;
 
@@ -103,7 +113,6 @@ exprs: expr | expr exprs
 expr: arithmetic_op
         | bool_OPS
         | varName
-        | constant
         | expr compare expr;
 
 parameters: let varName | comma parameters;
@@ -149,7 +158,7 @@ bool_OPS: not_op
         | xor_op;
 
 not_op: not varName 
-        | not constant
+        | not expr
         | not parantOpen expr parantClose;
 
 or_op: expr or expr;
