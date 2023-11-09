@@ -1,30 +1,30 @@
 //Tokens
-%token IF
-%token FOR WHILE
-%token LET
-%token VAR_NAME CONST CONSTANT
-%token FUNC RETURN
-%token LIST
-%token int? bnf 28
-%token READ
-%token STRING
-%token LC RC //left and right curly braces
-%token LP RP// left and right paranthesis
-%token ASSIGN_EQ//ASSIGN_EQual sign
-%token SC//semicolon
+%token if
+%token for while
+%token let
+%token varName const CONSTANT
+%token func return
+%token list
+// %token int? bnf 28
+%token read
+%token string
+%token curlyOpen curlyClose //left and right curly braces
+%token parantOpen parantClose// left and right paranthesis
+%token assignment//ASSIGN_EQual sign
+%token statementEnd//semicolon
 %token MAIN
-%token COMMA
-%token ARR_size // ~
-%token INT
-%token READ_OP
-%token LESS LESS_EQ MORE MORE_EQ EQ NOT_EQ
-%token INC DEC PLUS_EQ MIN_EQ DIV_EQ MUL_EQ
+%token comma
+%token arraySizeSpecifier // ~
+//%token INT
+%token readOperator printOperator
+%token smaller smallerEqual larger largerEqual equals notEquals
+%token increment decrement plusEqual minusEqual divideEqual timesEqual modEqual
 %token PLUS MINUS DIVIDE MULTIPLY POWER MODULO
-%token NOT OR AND XOR
-%token PRINT PRINT_LN
-%token COMMENT
+%token not or and xor
+%token print PRINT_LN
+%token comment
 
-%nonassoc ELSE_IF ELSE
+%nonassoc ELSE_if ELSE
 %nonassoc ELSE
 
 %start program
@@ -32,7 +32,7 @@
 %%
 // programm beginning
 
-main: MAIN LP RP LC program RC;
+main: MAIN parantOpen parantClose curlyOpen program curlyClose;
 program: statements;
 statements: statement| statements statement;
 statement: cond_statement
@@ -41,21 +41,21 @@ statement: cond_statement
         | statement;
 
 //conditionals
-cond_statement: If_statement
-        | Else_If_statement
+cond_statement: if_statement
+        | Else_if_statement
         | Else_statement;
 
-If_statement: IF LP expr RP LC statements RC;
-Else_If_statement: If_statement ELSE_IF LP expr RP LC statements RC;
-Else_statement: If_statement ELSE LC statements RC
-        | If_statement Else_If_statement ELSE LC statements RC;
+if_statement: if parantOpen expr parantClose curlyOpen statements curlyClose;
+Else_if_statement: if_statement ELSE_if parantOpen expr parantClose curlyOpen statements curlyClose;
+Else_statement: if_statement ELSE curlyOpen statements curlyClose
+        | if_statement Else_if_statement ELSE curlyOpen statements curlyClose;
 
 // loops
-loop: for | while;
-for: FOR LP LET VAR_NAME ASSIGN_EQ expr SC conditions SC Do_In_Loops LC statements RC;
-while: WHILE LP conditions RP LC statements RC;
+loop: for_loop | while_loop;
+for_loop: for parantOpen let varName assignment expr statementEnd conditions statementEnd Do_In_Loops curlyOpen statements curlyClose;
+while_loop: while parantOpen conditions parantClose curlyOpen statements curlyClose;
 
-conditions: VAR_NAME bool_OPS expr;
+conditions: varName bool_OPS expr;
 
 single_statement: varDeclaration
         | return_statement
@@ -64,70 +64,73 @@ single_statement: varDeclaration
         | const_Int_Dec_Assign
         | const_string_Dec_assign
         | var_dec_assign
-        | print
-        | print_line
-        | func_call;
+        | print_st
+        | read_sc
+        | print_line_st
+        | func_call
+        | comment;
 
-varDeclaration: LET VAR_NAME ASSIGN_EQ expr
-        | LET VAR_NAME ASSIGN_EQ arithmetic_op;
+varDeclaration: let varName assignment expr
+        | let varName assignment arithmetic_op;
 
-var_Assign: VAR_NAME assing_ops EXPR;
-var_dec_assign: LET var_Assign;
-const_Int_Dec_Assign: CONST VAR_NAME ASSIGN_EQ expr;
-const_string_Dec_assign: CONST VAR_NAME ASSIGN_EQ STRING;
-return_statement: RETURN expr;
+var_Assign: varName assing_ops EXPR;
+var_dec_assign: let var_Assign;
+const_Int_Dec_Assign: const varName assignment expr;
+const_string_Dec_assign: const varName assignment string;
+return_statement: return expr;
 
 //arrays
-arr_Dec: LIST VAR_NAME;
-arr_INIT: VAR_NAME ASSIGN_EQ LC insideOFList RC;
-insideOFList: VAR_NAME COMMA insideOFList
-        | VAR_NAME
+arr_Dec: list varName;
+arr_INIT: varName assignment curlyOpen insideOFList curlyClose;
+insideOFList: varName comma insideOFList
+        | varName
         | CONSTANT
-        | CONST COMMA insideOFList;
+        | const comma insideOFList;
 
-arraySizeSpecifier : ARR_size;
+arraySizeSpecifier_op : arraySizeSpecifier;
 
 // functions
 
-func_call: FUNC VAR_NAME LP expr RP;
-func: FUNC VAR_NAME LP parameters RP LC statements return_statement RC;
+func_call: func varName parantOpen expr parantClose;
+func: func varName parantOpen parameters parantClose curlyOpen statements return_statement curlyClose;
 
 //expressions
 
 exprs: expr | expr exprs
 expr: arithmetic_op
         | bool_OPS
-        | VAR_NAME
+        | varName
         | CONSTANT
         | expr compare expr;
 
-parameters: LET VAR_NAME | COMMA parameters;
+parameters: let varName | comma parameters;
 
 //scanner
-read: READ READ_OP expr;
+read_sc: read readOperator expr;
 
-compare: LESS
-        | LESS_EQ
-        | MORE
-        | MORE_EQ
-        | EQ
-        | NOT_EQ;
+compare: smaller
+        | smallerEqual
+        | larger
+        | largerEqual
+        | equals
+        | notEquals;
 
-Do_In_Loops: increment 
-        | decrement 
+Do_In_Loops: incremention
+        | decremention 
         | expr;
 
-increment: VAR_NAME INC 
-        | INC VAR_NAME;
+incremention: varName increment 
+        | increment varName;
 
-decrement: VAR_NAME DEC
-        | DEC VAR_NAME;
+decremention: varName decrement
+        | decrement varName;
 
-assing_ops: PLUS_EQ
-        | MIN_EQ
-        | DIV_EQ
-        | MUL_EQ
-        | ASSIGN_EQ;
+assing_ops: plusEqual
+        | minusEqual
+        | divideEqual
+        | modEqual
+        | timesEqual
+        |assignment;
 
 arithmetic_op: sum_op
         | substract_op
@@ -136,28 +139,28 @@ arithmetic_op: sum_op
         | mod_op
         | pow_op;
 
-sum_op: VAR_NAME PLUS VAR_NAME 
-        | CONSTANT PLUS VAR_NAME 
+sum_op: varName PLUS varName 
+        | CONSTANT PLUS varName 
         | CONSTANT PLUS CONSTANT;
 
-substract_op: VAR_NAME MINUS VAR_NAME 
-        | CONSTANT MINUS VAR_NAME 
+substract_op: varName MINUS varName 
+        | CONSTANT MINUS varName 
         | CONSTANT MINUS CONSTANT;
 
-multiply_op: VAR_NAME MULTIPLY VAR_NAME 
-        | CONSTANT MULTIPLY VAR_NAME 
+multiply_op: varName MULTIPLY varName 
+        | CONSTANT MULTIPLY varName 
         | CONSTANT MULTIPLY CONSTANT;
 
-divide_op: VAR_NAME DIVIDE VAR_NAME 
-        | CONSTANT DIVIDE VAR_NAME 
+divide_op: varName DIVIDE varName 
+        | CONSTANT DIVIDE varName 
         | CONSTANT DIVIDE CONSTANT;
 
-mod_op: VAR_NAME MODULO VAR_NAME 
-        | CONSTANT MODULO VAR_NAME 
+mod_op: varName MODULO varName 
+        | CONSTANT MODULO varName 
         | CONSTANT MODULO CONSTANT;
 
-pow_op: VAR_NAME POWER VAR_NAME 
-        | CONSTANT POWER VAR_NAME 
+pow_op: varName POWER varName 
+        | CONSTANT POWER varName 
         | CONSTANT POWER CONSTANT;
 
 bool_OPS: not_op
@@ -165,18 +168,18 @@ bool_OPS: not_op
         | and_op
         | xor_op;
 
-not_op: NOT VAR_NAME 
-        | NOT CONSTANT
-        | NOT LP expr RP;
+not_op: not varName 
+        | not CONSTANT
+        | not parantOpen expr parantClose;
 
-or_op: expr OR expr;
-and_op: expr AND expr;
-xor_op: expr XOR expr;
+or_op: expr or expr;
+and_op: expr and expr;
+xor_op: expr xor expr;
 
-print: PRINT expr; 
-print_line: PRINT_LN;
+print_st: print printOperator expr; 
+print_line_st: printLineCall;
 
-comment: COMMENT expr;
+comment_st: comment expr;
 
 %%
 #include "lex.yy.c"
@@ -194,6 +197,3 @@ int main(void){
 	yyparse();
 	if(yynerrs < 1) printf("there are no syntax errors!!\n");
 }
-
-
-
