@@ -3,7 +3,7 @@
 	#include "y.tab.h"
     void yyerror(char *);   
 %}
-MAIN start
+main main
 digit [0-9]
 number ({digit}+)
 negativeOptional ([-]?)
@@ -136,6 +136,7 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {arrKeyword} {printf(" LET_LIST ");}
 {arraySizeSpecifier} {printf(" LIST_SIZE_SPECIFIER ");}
 {varName} {printf(" VAR_NAME ");}
+{main} {printf(" MAIN ");}
 %%
 
 int yywrap(void) {
