@@ -33,7 +33,6 @@
 %token comment
 
 %nonassoc elseIfKeyword elseKeyword
-%nonassoc elseKeyword
 
 %start program
 
