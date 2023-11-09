@@ -56,18 +56,19 @@ cond_statement: if_statement
         | Else_if_statement
         | Else_statement;
 
-if_statement: IF PARANT_OPEN expr PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
-Else_if_statement: if_statement ELSE_IF PARANT_OPEN expr PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
+if_statement: IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
+Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
         | if_statement Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE;
 
 // loops
 loop: for_loop | while_loop;
 
-for_loop: FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT expr SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE;
+for_loop: FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT NUMBER SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE 
+| FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT VAR_NAME SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE;;
 while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE;
 
-conditions: VAR_NAME bool_OPS expr;
+conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER;
 
 single_statement: varDeclaration
         | var_Assign
@@ -79,20 +80,24 @@ single_statement: varDeclaration
         | readCall_sc
         | print_line_st;
 
-varDeclaration: LET_INT VAR_NAME ASSIGNMENT expr
-        | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST;
+varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER
+	|  LET_INT VAR_NAME ASSIGNMENT VAR_NAME
+        | LET_STRING VAR_NAME ASSIGNMENT STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
 
-var_Assign: VAR_NAME assing_ops expr;
+var_Assign: VAR_NAME assing_ops VAR_NAME
+		|VAR_NAME assing_ops NUMBER;
 
-constIntKeyword_Int_Dec_Assign: constIntKeyword VAR_NAME ASSIGNMENT expr;
-constIntKeyword_string_Dec_assign: constIntKeyword VAR_NAME ASSIGNMENT LET_LIST;
+constIntKeyword_Int_Dec_Assign: constIntKeyword VAR_NAME ASSIGNMENT VAR_NAME
+		constIntKeyword VAR_NAME ASSIGNMENT NUMBER;
+constIntKeyword_string_Dec_assign: constIntKeyword VAR_NAME ASSIGNMENT STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
 
 
-print_st: PRINT PRINT_OP expr; 
+print_st: PRINT PRINT_OP VAR_NAME | PRINT PRINT_OP NUMBER | PRINT PRINT_OP STRING_CONST; 
 print_line_st: PRINT_LINE;
 
 //scanner
-readCall_sc: READ READ_OP expr;
+readCall_sc: READ READ_OP NUMBER
+	|READ READ_OP STRING_CONST;
 
 
 // functions
@@ -106,10 +111,11 @@ parameters: LET_INT VAR_NAME COMMA parameters
 
 expr: arithmetic_ops
         | bool_OPS
-        | VAR_NAME compare expr;
+        | VAR_NAME compare NUMBER;
 
-arithmetic_ops: VAR_NAME arithmetic_op expr
-                  | expr arithmetic_op expr;
+arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
+                  | VAR_NAME arithmetic_op NUMBER
+		|NUMBER arithmetic_op NUMBER;
 
 arithmetic_op: PLUS
         | SUBTRACT
@@ -125,8 +131,9 @@ compare: SMALLER
         | EQUALS
         | NOT_EQUALS;
 
-bool_OPS:  VAR_NAME bool_OP expr
-                | VAR_NAME bool_OP VAR_NAME;
+bool_OPS:  VAR_NAME bool_OP VAR_NAME
+                | VAR_NAME bool_OP NUMBER;
+		| NUMBER bool_OPS NUMBER;
 
 bool_OP: NOT
         | OR
@@ -140,8 +147,8 @@ arr_Dec: LET_LIST VAR_NAME;
 arr_INIT: VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE;
 insideOFList: VAR_NAME COMMA insideOFList
         | VAR_NAME
-	| expr
-        | expr COMMA insideOFList;
+	| NUMBER
+        | NUMBER COMMA insideOFList;
 
 arraySizeSpecifier_op : LIST_SIZE_SPECIFIER;
 
