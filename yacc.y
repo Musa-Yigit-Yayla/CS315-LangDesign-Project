@@ -32,8 +32,8 @@
 %%
 // programm beginning
 
-
-program: MAIN LP RP LC statements RC;
+main: MAIN LP RP LC program RC;
+program: statements;
 statements: statement| statements statement;
 statement: cond_statement
 		| loop
