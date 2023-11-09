@@ -1,23 +1,20 @@
 %{
-	//#define YYDEBUG 1
-	#include "stdio.h"
-    void yyerror(char *);
-    extern int yylineno;
-    #include "y.tab.h"
-	int yylex(void);
+#include <stdio.h>
+#include <stdlib.h>
+#define YYDEBUG 1
 %}
 
 
 
 //Tokens
-%token if
+%token ifKeyword
 %token for while
 %token let
-%token varName const number
+%token varName constIntKeyword number
 %token func return
 %token list
 // %token int? bnf 28
-%token read
+%token readCall
 %token string
 %token curlyOpen curlyClose //left and right curly braces
 %token parantOpen parantClose// left and right paranthesis
@@ -27,7 +24,7 @@
 %token comma
 %token arraySizeSpecifier // ~
 //%token INT
-%token readOperator printOperator
+%token readCallOperator printOperator
 %token smaller smallerEqual larger largerEqual equals notEquals
 %token increment decrement plusEqual minusEqual divideEqual timesEqual modEqual
 %token sum substract multiply divide mod pow
@@ -56,8 +53,8 @@ cond_statement: if_statement
         | Else_if_statement
         | Else_statement;
 
-if_statement: if parantOpen expr parantClose curlyOpen statements curlyClose;
-Else_if_statement: if_statement elseIfKeyword parantOpen expr parantClose curlyOpen statements curlyClose;
+if_statement: ifKeyword parantOpen expr parantClose statementEnd curlyOpen statements curlyClose;
+Else_if_statement: if_statement elseIfKeyword parantOpen expr parantClose statementEnd curlyOpen statements curlyClose;
 Else_statement: if_statement elseKeyword curlyOpen statements curlyClose
         | if_statement Else_if_statement elseKeyword curlyOpen statements curlyClose;
 
@@ -72,11 +69,11 @@ single_statement: varDeclaration
         | return_statement
         | arr_Dec
         | var_Assign
-        | const_Int_Dec_Assign
-        | const_string_Dec_assign
+        | constIntKeyword_Int_Dec_Assign
+        | constIntKeyword_string_Dec_assign
         | var_dec_assign
         | print_st
-        | read_sc
+        | readCall_sc
         | print_line_st
         | func_call
 	|func_def
@@ -87,8 +84,8 @@ varDeclaration: let varName assignment expr
 
 var_Assign: varName assing_ops expr;
 var_dec_assign: let var_Assign;
-const_Int_Dec_Assign: const varName assignment expr;
-const_string_Dec_assign: const varName assignment string;
+constIntKeyword_Int_Dec_Assign: constIntKeyword varName assignment expr;
+constIntKeyword_string_Dec_assign: constIntKeyword varName assignment string;
 return_statement: return expr;
 
 
@@ -118,7 +115,7 @@ expr: arithmetic_op
 parameters: let varName | comma parameters;
 
 //scanner
-read_sc: read readOperator expr;
+readCall_sc: readCall readCallOperator expr;
 
 compare: smaller
         | smallerEqual
@@ -172,17 +169,14 @@ comment_st: comment expr;
 
 %%
 #include "lex.yy.c"
+int lineNo;
+int state = 0;
 
-// report errors
-void yyerror(char *s) 
-{
-  fprintf(stderr, "syntax error at line: %d %s\n", yylineno, s);
+int main() {
+        yyparse();
+        if(state == 0){
+                printf("Parsing is successfully completed.\n");
+        }
+        return 0;
 }
-
-int main(void){
-	//#if YYDEBUG
-	//	yydebug = 1;
-	//#endif
-	yyparse();
-	if(yynerrs < 1) printf("there are no syntax errors!!\n");
-}
+void yyerror( char *s ) { state = -1; fprintf( stderr, "%d: %s\n",lineNo+1,s); }
