@@ -8,7 +8,7 @@
 
 //Tokens
 %token ifKeyword
-%token for while
+%token FOR WHILE
 %token let
 %token varName constIntKeyword number
 %token func returnKeyword
@@ -60,8 +60,8 @@ Else_statement: if_statement elseKeyword curlyOpen statements curlyClose
 
 // loops
 loop: for_loop | while_loop;
-for_loop: for parantOpen let varName assignment expr statementEnd conditions statementEnd Do_In_Loops curlyOpen statements curlyClose;
-while_loop: while parantOpen conditions parantClose curlyOpen statements curlyClose;
+for_loop: FOR parantOpen let varName assignment expr statementEnd conditions statementEnd Do_In_Loops curlyOpen statements curlyClose;
+while_loop: WHILE parantOpen conditions parantClose curlyOpen statements curlyClose;
 
 conditions: varName bool_OPS expr;
 
