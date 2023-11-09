@@ -148,7 +148,7 @@ bool_OP: NOT
         | AND
         | XOR;
 
-comment_st: COMMENT;
+comment_st: COMMENT STRING_CONST COMMENT;
 
 //arrays
 arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE;
