@@ -122,6 +122,7 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {curlyClose} { return CURLY_CLOSE;}
 {arrBrackOpen} { return ARR_BRACK_OPEN;}
 {arrBrackClose} { return ARR_BRACK_CLOSE;}
+{constIntKeyword} { return INT_CONST}
 {stringOpenOrClose} { return STRING_OPEN_OR_CLOSE;}
 {stringConst} { return STRING_CONST;}
 {comment} { return COMMENT;}

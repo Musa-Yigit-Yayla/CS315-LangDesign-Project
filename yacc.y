@@ -1,17 +1,16 @@
 //Tokens
 %token IF
 %token FOR WHILE
-%token LET
-%token VAR_NAME CONST CONSTANT
+%token VAR_NAME INT_CONST STRING_CONST
 %token FUNC RETURN
-%token LIST
-%token int? bnf 28
-%token READ
-%token STRING
-%token LC RC //left and right curly braces
-%token LP RP// left and right paranthesis
-%token ASSIGN_EQ//ASSIGN_EQual sign
-%token SC//semicolon
+%token LET_LIST
+%token LET_INT
+%token LET_STRING
+%token READ_OP
+%token CURLY_OPEN CURLY_CLOSE
+%token PARANT_OPEN PARANT_CLOSE
+%token ASSIGNMENT
+%token SEMICOL
 %token MAIN
 %token COMMA
 %token ARR_size // ~
@@ -69,7 +68,7 @@ single_statement: varDeclaration
         | print_line
         | func_call;
 
-varDeclaration: LET VAR_NAME ASSIGN_EQ expr
+varDeclaration: LET_INT VAR_NAME ASSIGN_EQ expr
         | LET VAR_NAME ASSIGN_EQ arithmetic_op;
 
 var_Assign: VAR_NAME assing_ops EXPR;
