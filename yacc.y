@@ -68,6 +68,7 @@ single_statement: varDeclaration
         | read_sc
         | print_line_st
         | func_call
+	|func_def
         | comment;
 
 varDeclaration: let varName assignment expr
@@ -94,7 +95,7 @@ arraySizeSpecifier_op : arraySizeSpecifier;
 // functions
 
 func_call: func varName parantOpen expr parantClose;
-func: func varName parantOpen parameters parantClose curlyOpen statements return_statement curlyClose;
+func_def: func varName parantOpen parameters parantClose curlyOpen statements return_statement curlyClose;
 
 //expressions
 
