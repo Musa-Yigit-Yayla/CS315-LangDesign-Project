@@ -1,6 +1,6 @@
 %{
 	#include <stdio.h>
-	//#include "y.tab.h"
+	#include "y.tab.h"
     void yyerror(char *);   
 %}
 main main
@@ -134,6 +134,7 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {comma} {return COMMA;}
 {intKeyword} {return LET_INT;}
 {stringKeyword} {return LET_STRING;}
+{constIntKeyword} {return CONST;}
 {arrKeyword} {return LET_LIST;}
 {arraySizeSpecifier} {return LIST_SIZE_SPECIFIER;}
 {varName} {return VAR_NAME;}
