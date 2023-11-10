@@ -1,5 +1,9 @@
 #number of times program should calculate the mod of given two numbers.
 
+func foo(y,z){
+	return y%z;
+}
+
 main () {
 string times = "Enter number of exercies: ";
 
@@ -19,6 +23,4 @@ for(let a=0; a < x; a++){
 	print << foo(y,z);
 }
 }
-func foo(y,z){
-	return y%z;
-}
+

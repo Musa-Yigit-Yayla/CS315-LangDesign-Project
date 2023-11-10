@@ -1,6 +1,6 @@
 %{
 	#include <stdio.h>
-	#include "y.tab.h"
+	//#include "y.tab.h"
     void yyerror(char *);   
 %}
 main main
@@ -82,6 +82,7 @@ constIntDecAssign ((const)({mandBlank})({varName})({optionalBlank})({assignment}
 constStringDecAssign (string)({mandBlank})({varName})({optionalBlank})({assignment})({optionalBlank})({stringConst})({optionalNewOrBlank})({statementEnd})
 arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd}))
 %%
+{main} {return MAIN;}
 {number} {return NUMBER;}
 {ifKeyword} {return IF;}
 {elseIfKeyword} {return ELSE_IF;}
@@ -136,7 +137,6 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {arrKeyword} {return LET_LIST;}
 {arraySizeSpecifier} {return LIST_SIZE_SPECIFIER;}
 {varName} {return VAR_NAME;}
-{main} {return MAIN;}
 %%
 
 int yywrap(void) {
