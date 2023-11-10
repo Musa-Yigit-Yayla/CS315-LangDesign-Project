@@ -10,7 +10,7 @@
 %token IF
 %token FOR WHILE
 %token LET_INT LET_STRING
-%token VAR_NAME constIntKeyword NUMBER NEWLINE
+%token VAR_NAME CONST NUMBER NEWLINE
 %token FUNC RETURN
 %token LET_LIST
 // %token int? bnf 28
@@ -40,143 +40,140 @@
 %%
 // programm beginning
 
-program: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE;
+program: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {printf("program\n");};
 
-statements: statement| statements statement;
+statements: statement| statements statement {printf("statements\n");};
 
 statement: cond_statement
 		| loop
 		| single_statement
         	| func_call
 		| func_def
-		| comment_st;
+		| comment_st {printf("statement");};
 
 //conditionals
 cond_statement: if_statement
         | Else_if_statement
-        | Else_statement;
+        | Else_statement {printf("cond_statement");};
 
-if_statement: IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
-Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE;
+if_statement: IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
+Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE{printf("Else_if_statement");};
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
-        |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE;
+        |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
 
 // loops
-loop: for_loop | while_loop;
+loop: for_loop | while_loop {printf("loop");};
 
 for_loop: FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT NUMBER SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE 
-| FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT VAR_NAME SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE;;
-while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE;
+| FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT VAR_NAME SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE {printf("for_loop");};
+while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {printf("while_loop");};
 
-conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER;
+conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {printf("conditions");};
 
 single_statement: varDeclaration
         | var_Assign
-        | constIntKeyword_Int_Dec_Assign
-        | constIntKeyword_string_Dec_assign
+        | CONST_Int_Dec_Assign
 	| arr_Dec_init
 	| arr_Dec
 	| arr_INIT
         | print_st
         | readCall_sc
-        | print_line_st;
+        | print_line_st {printf("single_statement");};
 
 varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER
 	|  LET_INT VAR_NAME ASSIGNMENT VAR_NAME
-        | LET_STRING VAR_NAME ASSIGNMENT STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
+        | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST {printf("var_declaration");};
 
 var_Assign: VAR_NAME assing_ops VAR_NAME
 		|VAR_NAME assing_ops NUMBER
-		|VAR_NAME assing_ops STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
+		|VAR_NAME assing_ops STRING_CONST {printf("var_Assign");};
 
-constIntKeyword_Int_Dec_Assign: constIntKeyword VAR_NAME ASSIGNMENT VAR_NAME|
-		constIntKeyword VAR_NAME ASSIGNMENT NUMBER;
-constIntKeyword_string_Dec_assign: constIntKeyword VAR_NAME ASSIGNMENT STRING_OPEN_OR_CLOSE STRING_CONST STRING_OPEN_OR_CLOSE;
+CONST_Int_Dec_Assign: CONST VAR_NAME ASSIGNMENT VAR_NAME|
+		CONST VAR_NAME ASSIGNMENT NUMBER {printf("CONST");};
 
 
-print_st: PRINT PRINT_OP VAR_NAME | PRINT PRINT_OP NUMBER | PRINT PRINT_OP STRING_CONST; 
-print_line_st: PRINT_LINE;
+print_st: PRINT PRINT_OP VAR_NAME | PRINT PRINT_OP NUMBER | PRINT PRINT_OP STRING_CONST {printf("print_st");}; 
+print_line_st: PRINT_LINE {printf("print_line_st");};
 
 //scanner
 readCall_sc: READ READ_OP NUMBER
-	|READ READ_OP STRING_CONST;
+	|READ READ_OP STRING_CONST {printf("readCall_sc");};
 
 
 // functions
-func_call: VAR_NAME PARANT_OPEN parameters PARANT_CLOSE;
+func_call: VAR_NAME PARANT_OPEN parameters PARANT_CLOSE {printf("func_call");};
 
 func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN VAR_NAME CURLY_CLOSE
-	|FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN NUMBER CURLY_CLOSE;
+	|FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN NUMBER CURLY_CLOSE {printf("func_def");};
 
 
 parameters: LET_INT VAR_NAME COMMA parameters
-		| LET_STRING VAR_NAME COMMA parameters;
-		//|/* empty */;
+		| LET_STRING VAR_NAME COMMA parameters {printf("parameters");};
 
 expr: arithmetic_ops
         | bool_OPS
-        | comparison;
+        | comparison {printf("expr");};
 
 arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
                   | VAR_NAME arithmetic_op NUMBER
-		|NUMBER arithmetic_op NUMBER;
+		|NUMBER arithmetic_op NUMBER {printf("arithmetic_ops");};
 
 arithmetic_op: PLUS
         | SUBTRACT
         | MULTIPLY
         | DIVIDE
         | REMAINDER
-        | POW;
+        | POW {printf("arithmetic_op");};
 
 comparison: VAR_NAME compare VAR_NAME
                   | VAR_NAME compare NUMBER
-		|NUMBER compare NUMBER;
+		|NUMBER compare NUMBER {printf("comparison");};
 
 compare: SMALLER
         | SMALLER_EQUAL
         | LARGER
         | LARGER_EQUAL
         | EQUALS
-        | NOT_EQUALS;
+        | NOT_EQUALS {printf("compare");};
 
 bool_OPS:  VAR_NAME bool_OP VAR_NAME
                 | VAR_NAME bool_OP NUMBER;
-		| NUMBER bool_OP NUMBER;
+		| NUMBER bool_OP NUMBER {printf("bool_OPS");};
 
 bool_OP: NOT
         | OR
         | AND
-        | XOR;
+        | XOR {printf("bool_OP");};
 
-comment_st: COMMENT STRING_CONST COMMENT;
+comment_st: COMMENT STRING_CONST COMMENT {printf("comment_st");};
 
 //arrays
-arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE;
-arr_Dec: LET_LIST VAR_NAME;
-arr_INIT: VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE;
+arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {printf("arr_Dec_init");};
+arr_Dec: LET_LIST VAR_NAME {printf("arr_Dec");};
+arr_INIT: VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {printf("arr_INIT");};
 insideOFList: VAR_NAME COMMA insideOFList
         | VAR_NAME
 	| NUMBER
-        | NUMBER COMMA insideOFList;
+        | NUMBER COMMA insideOFList {printf("insideOFList");};
 
 //arraySizeSpecifier_op : LIST_SIZE_SPECIFIER;
 
 Do_In_Loops: incremention
         | decremention 
-        | expr;
+        | expr {printf("Do_In_Loops");};
 
 incremention: VAR_NAME INCREMENT 
-        | INCREMENT VAR_NAME;
+        | INCREMENT VAR_NAME {printf("incremention");};
 
 decremention: VAR_NAME DECREMENT
-        | DECREMENT VAR_NAME;
+        | DECREMENT VAR_NAME {printf("decremention");};
 
 assing_ops: PLUS_ASSIGN
         | SUBTRACT_ASSIGN
         | DIVIDE_ASSIGN
         | REMAINDER_ASSIGN
         | MULTIPLY_ASSIGN
-        |ASSIGNMENT;
+        |ASSIGNMENT {printf("assing_ops");};
 
 
 %%
