@@ -1,3 +1,6 @@
+//Maryam Azimli
+//Musa Yiğit Yayla
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,148 +35,175 @@
 %token PRINT PRINT_LINE
 %token COMMENT
 %token ARR_BRACK_OPEN ARR_BRACK_CLOSE STRING_OPEN_OR_CLOSE STRING_CONST
+%token STRING_INNER_STATEMENT
 %token MAIN
 %nonassoc ELSE_IF ELSE
 
+%debug //remove this debug option later on
 %start program
 
 %%
 // programm beginning
 
-program: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {printf("program\n");};
+program: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 1; printf("program\n");};
 
-statements: statement| statements statement {printf("statements\n");};
+statements: statement | statement statements {lineNo = 2; printf("statements\n");};
 
 statement: cond_statement
 		| loop
 		| single_statement
         	| func_call
 		| func_def
-		| comment_st {printf("statement");};
+		| comment_st 
+                | NEWLINE {lineNo = 3; printf("statement");};
 
 //conditionals
 cond_statement: if_statement
         | Else_if_statement
-        | Else_statement {printf("cond_statement");};
+        | Else_statement {lineNo = 4; printf("cond_statement");};
 
-if_statement: IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
-Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE{printf("Else_if_statement");};
+if_statement: IF PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 5; printf("if_statement");};
+Else_if_statement: if_statement ELSE_IF PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE{lineNo = 6; printf("Else_if_statement");};
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
-        |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
+        |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 7; printf("if_statement");};
 
 // loops
-loop: for_loop | while_loop {printf("loop");};
+loop: for_loop | while_loop {lineNo = 8; printf("loop");};
 
-for_loop: FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT NUMBER SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE 
-| FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT VAR_NAME SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE {printf("for_loop");};
-while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {printf("while_loop");};
+for_loop: FOR PARANT_OPEN single_statement single_statement_without_semicol SEMICOL Do_In_Loops PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE  {lineNo = 9; printf("for_loop");};
+while_loop: WHILE PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 10; printf("while_loop");};
 
-conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {printf("conditions");};
+//conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {lineNo = 11; printf("conditions");};
 
-single_statement: varDeclaration
-        | var_Assign
+single_statement: varDeclaration SEMICOL  {printf("var_declaration_single_statement");}
+        | var_Assign SEMICOL { printf("var_Assign");}
+        | CONST_Int_Dec_Assign SEMICOL
+	| arr_Dec_init SEMICOL
+	| arr_Dec SEMICOL
+	| arr_INIT SEMICOL
+        | print_st SEMICOL
+        | readCall_sc SEMICOL
+        | print_line_st SEMICOL {lineNo = 12; printf("print_line_st");};
+
+single_statement_without_semicol:  varDeclaration
+        | var_Assign { printf("var_Assign");}
         | CONST_Int_Dec_Assign
-	| arr_Dec_init
-	| arr_Dec
-	| arr_INIT
-        | print_st
-        | readCall_sc
-        | print_line_st {printf("single_statement");};
+        | VAR_NAME expr VAR_NAME
+        | VAR_NAME expr NUMBER 
+        | NUMBER expr NUMBER
+        | NUMBER expr VAR_NAME;
 
-varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER
+
+varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER  {printf("var_declaration");}
 	|  LET_INT VAR_NAME ASSIGNMENT VAR_NAME
-        | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST {printf("var_declaration");};
+        | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST {lineNo = 13; printf("var_declaration");};
 
 var_Assign: VAR_NAME assing_ops VAR_NAME
-		|VAR_NAME assing_ops NUMBER
-		|VAR_NAME assing_ops STRING_CONST {printf("var_Assign");};
+		| VAR_NAME assing_ops NUMBER
+		| VAR_NAME assing_ops STRING_CONST {lineNo = 14; printf("string_Assign");};
 
 CONST_Int_Dec_Assign: CONST VAR_NAME ASSIGNMENT VAR_NAME|
-		CONST VAR_NAME ASSIGNMENT NUMBER {printf("CONST");};
+		CONST VAR_NAME ASSIGNMENT NUMBER {lineNo = 15; printf("CONST");};
 
 
-print_st: PRINT PRINT_OP VAR_NAME | PRINT PRINT_OP NUMBER | PRINT PRINT_OP STRING_CONST {printf("print_st");}; 
-print_line_st: PRINT_LINE {printf("print_line_st");};
+print_st: PRINT PRINT_OP VAR_NAME | PRINT PRINT_OP NUMBER | PRINT PRINT_OP STRING_CONST {lineNo = 16; printf("print_st");}; 
+print_line_st: PRINT_LINE {lineNo = 17; printf("print_line_st");};
 
 //scanner
 readCall_sc: READ READ_OP NUMBER
-	|READ READ_OP STRING_CONST {printf("readCall_sc");};
+	|READ READ_OP STRING_INNER_STATEMENT {lineNo = 18; printf("readCall_sc");};
 
 
 // functions
-func_call: VAR_NAME PARANT_OPEN parameters PARANT_CLOSE {printf("func_call");};
+func_call: VAR_NAME PARANT_OPEN parameters PARANT_CLOSE {lineNo = 19; printf("func_call");};
 
 func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN VAR_NAME CURLY_CLOSE
-	|FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN NUMBER CURLY_CLOSE {printf("func_def");};
+	|FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statements RETURN NUMBER CURLY_CLOSE {lineNo = 20; printf("func_def");};
 
 
 parameters: LET_INT VAR_NAME COMMA parameters
-		| LET_STRING VAR_NAME COMMA parameters {printf("parameters");};
+		| LET_STRING VAR_NAME COMMA parameters
+                | /* empty parameter token*/ {} {lineNo = 21; printf("parameters");};
 
-expr: arithmetic_ops
-        | bool_OPS
-        | comparison {printf("expr");};
-
-arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
-                  | VAR_NAME arithmetic_op NUMBER
-		|NUMBER arithmetic_op NUMBER {printf("arithmetic_ops");};
-
-arithmetic_op: PLUS
-        | SUBTRACT
-        | MULTIPLY
-        | DIVIDE
-        | REMAINDER
-        | POW {printf("arithmetic_op");};
-
-comparison: VAR_NAME compare VAR_NAME
-                  | VAR_NAME compare NUMBER
-		|NUMBER compare NUMBER {printf("comparison");};
-
-compare: SMALLER
+expr:    NOT
+        | OR
+        | AND
+        | XOR
+        | SMALLER
         | SMALLER_EQUAL
         | LARGER
         | LARGER_EQUAL
         | EQUALS
-        | NOT_EQUALS {printf("compare");};
+        | NOT_EQUALS
+        | PLUS
+        | SUBTRACT
+        | MULTIPLY
+        | DIVIDE
+        | REMAINDER
+        | POW {lineNo = 22; printf("expr");};
 
-bool_OPS:  VAR_NAME bool_OP VAR_NAME
-                | VAR_NAME bool_OP NUMBER;
-		| NUMBER bool_OP NUMBER {printf("bool_OPS");};
+//arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
+//                  | VAR_NAME arithmetic_op NUMBER
+//		|NUMBER arithmetic_op NUMBER {lineNo = 23; printf("arithmetic_ops");};
 
-bool_OP: NOT
-        | OR
-        | AND
-        | XOR {printf("bool_OP");};
+//arithmetic_op: PLUS
+//        | SUBTRACT
+//        | MULTIPLY
+//        | DIVIDE
+//        | REMAINDER
+//        | POW {lineNo = 24; printf("arithmetic_op");};
 
-comment_st: COMMENT STRING_CONST COMMENT {printf("comment_st");};
+//comparison: VAR_NAME compare VAR_NAME
+//                | VAR_NAME compare NUMBER
+//		| NUMBER compare NUMBER 
+//                | NUMBER compare VAR_NAME {lineNo = 25; printf("comparison");};
+
+//compare: //SMALLER
+//        | SMALLER_EQUAL
+//        | LARGER
+//        | LARGER_EQUAL
+//        | EQUALS
+//        | NOT_EQUALS {lineNo = 26; printf("compare");};
+
+//bool_OPS:  VAR_NAME bool_OP VAR_NAME
+//                | VAR_NAME bool_OP NUMBER
+//		| NUMBER bool_OP NUMBER
+//                | NUMBER bool_OP VAR_NAME {lineNo = 27; printf("bool_OPS");};
+
+//bool_OP: NOT
+//        | OR
+//        | AND
+//        | XOR {lineNo = 27; printf("bool_OP");};
+
+comment_st: COMMENT STRING_INNER_STATEMENT COMMENT {lineNo = 28; printf("comment_st");};
 
 //arrays
-arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {printf("arr_Dec_init");};
-arr_Dec: LET_LIST VAR_NAME {printf("arr_Dec");};
-arr_INIT: VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {printf("arr_INIT");};
+arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {lineNo = 29; printf("arr_Dec_init");};
+arr_Dec: LET_LIST VAR_NAME {lineNo = 30; printf("arr_Dec");};
+arr_INIT: VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {lineNo = 31; printf("arr_INIT");};
 insideOFList: VAR_NAME COMMA insideOFList
         | VAR_NAME
 	| NUMBER
-        | NUMBER COMMA insideOFList {printf("insideOFList");};
+        | NUMBER COMMA insideOFList {lineNo = 32; printf("insideOFList");};
 
 //arraySizeSpecifier_op : LIST_SIZE_SPECIFIER;
 
 Do_In_Loops: incremention
         | decremention 
-        | expr {printf("Do_In_Loops");};
+        | var_Assign {lineNo =33; printf("Do_In_Loops");};
 
 incremention: VAR_NAME INCREMENT 
-        | INCREMENT VAR_NAME {printf("incremention");};
+        | INCREMENT VAR_NAME {lineNo = 34; printf("incremention");};
 
 decremention: VAR_NAME DECREMENT
-        | DECREMENT VAR_NAME {printf("decremention");};
+        | DECREMENT VAR_NAME {lineNo = 35; printf("decremention");};
 
 assing_ops: PLUS_ASSIGN
         | SUBTRACT_ASSIGN
         | DIVIDE_ASSIGN
         | REMAINDER_ASSIGN
         | MULTIPLY_ASSIGN
-        |ASSIGNMENT {printf("assing_ops");};
+        | ASSIGNMENT {lineNo = 36; printf("assing_ops");};
 
 
 %%
@@ -186,6 +216,9 @@ int main() {
         if(state == 0){
                 printf("Parsing is successfully completed.\n");
         }
+        else{
+                printf("Parsing is unsuccessful\n" + state);
+        }
         return 0;
 }
-void yyerror( char *s ) { state = -1; fprintf( stderr, "%d: %s\n",lineNo+1,s); }
+void yyerror( char *s ) { state = -1; fprintf( stderr, "%d: %s\n",lineNo,s); }

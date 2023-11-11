@@ -59,7 +59,7 @@ arrBrackOpen [[]
 arrBrackClose []]
 stringOpenOrClose ["]
 stringInnerStatement (((([.]*)({newLine})*))*)
-stringConst ("({stringInnerStatement})")
+stringConst ("({stringInnerStatement}
 comment ([#](([^(\n)])*)(\n))
 comma ,
 arraySizeSpecifier ~ 
@@ -78,58 +78,59 @@ constIntDecAssign ((const)({mandBlank})({varName})({optionalBlank})({assignment}
 constStringDecAssign (string)({mandBlank})({varName})({optionalBlank})({assignment})({optionalBlank})({stringConst})({optionalNewOrBlank})({statementEnd})
 arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementEnd}))
 %%
-{number} {printf(" NUMBER ");}
-{ifKeyword} {printf(" IF ");}
-{elseIfKeyword} {printf(" ELSE_IF ");}
-{elseKeyword} {printf(" ELSE ");}
-{for} {printf(" FOR ");}
-{while} {printf(" WHILE ");}
-{functionKeyword} {printf(" FUNC ");}
-{returnKeyword} {printf(" RETURN ");}
-{printCall} {printf(" PRINT ");}
-{printLineCall} {printf(" PRINT_LINE ");}
-{readCall} {printf(" READ ");}
-{printOperator} {printf(" PRINT_OP ");}
-{readOperator} {printf(" READ_OP ");}
-{statementEnd} {printf(" SEMICOL ");}
-{assignment} {printf(" ASSIGNMENT ");}
-{equals} {printf(" EQUALS ");}
-{notEquals} {printf(" NOT_EQUALS ");}
-{not} {printf(" NOT ");}
-{or} {printf(" OR ");}
-{and} {printf(" AND ");}
-{xor} {printf(" XOR ");}
-{larger} {printf(" LARGER ");}
-{smaller} {printf(" SMALLER ");}
-{largerEqual} {printf(" LARGER_EQUAL ");}
-{smallerEqual} {printf(" SMALLER_EQUAL ");}
-{increment} {printf(" INCREMENT ");}
-{decrement} {printf(" DECREMENT ");}
-{plusEqual} {printf(" PLUS_ASSIGN");}
-{minusEqual} {printf(" SUBTRACT_ASSIGN ");}
-{timesEqual} {printf(" MULTIPLY_ASSIGN ");}
-{divideEqual} {printf(" DIVIDE_ASSIGN ");}
-{modEqual} {printf(" REMAINDER_ASSIGN ");}
-{sum} {printf(" PLUS ");}
-{subtract} {printf(" SUBTRACT ");}
-{multiply} {printf(" MULTIPLY ");}
-{divide} {printf(" DIVIDE ");}
-{mod} {printf(" REMAINDER ");}
-{pow} {printf(" POW ");}
-{parantOpen} {printf(" PARANT_OPEN ");}
-{parantClose} {printf(" PARANT_CLOSE ");}
-{curlyOpen} {printf(" CURLY_OPEN ");}
-{curlyClose} {printf(" CURLY_CLOSE ");}
-{arrBrackOpen} {printf(" ARR_BRACK_OPEN ");}
-{arrBrackClose} {printf(" ARR_BRACK_CLOSE ");}
-{stringOpenOrClose} {printf(" STRING_OPEN_OR_CLOSE ");}
-{stringConst} {printf(" STRING_CONST ");}
-{comment} {printf(" COMMENT ");}
-{newLine} {printf(" NEWLINE ");}
-{comma} {printf(" COMMA ");}
-{intKeyword} {printf(" LET_INT ");}
-{stringKeyword} {printf(" LET_STRING ");}
-{arrKeyword} {printf(" LET_LIST ");}
-{arraySizeSpecifier} {printf(" LIST_SIZE_SPECIFIER ");}
-{varName} {printf(" VAR_NAME ");}
+{number} { return NUMBER;}
+{ifKeyword} { return IF;}
+{elseIfKeyword} { return ELSE_IF;}
+{elseKeyword} { return ELSE;}
+{for} { return FOR;}
+{while} { return WHILE;}
+{functionKeyword} { return FUNC;}
+{returnKeyword} { return RETURN;}
+{printCall} { return PRINT;}
+{printLineCall} { return PRINT_LINE;}
+{readCall} { return READ;}
+{printOperator} { return PRINT_OP;}
+{readOperator} { return READ_OP;}
+{statementEnd} { return SEMICOL;}
+{assignment} { return ASSIGNMENT;}
+{equals} { return EQUALS;}
+{notEquals} { return NOT_EQUALS;}
+{not} { return NOT;}
+{or} { return OR;}
+{and} { return AND;}
+{xor} { return XOR;}
+{larger} { return LARGER;}
+{smaller} { return SMALLER;}
+{largerEqual} { return LARGER_EQUAL;}
+{smallerEqual} { return SMALLER_EQUAL;}
+{increment} { return INCREMENT;}
+{decrement} { return DECREMENT;}
+{plusEqual} { return PLUS_ASSIGN;}
+{minusEqual} { return SUBTRACT_ASSIGN;}
+{timesEqual} { return MULTIPLY_ASSIGN;}
+{divideEqual} { return DIVIDE_ASSIGN;}
+{modEqual} { return REMAINDER_ASSIGN;}
+{sum} { return PLUS;}
+{subtract} { return SUBTRACT;}
+{multiply} { return MULTIPLY;}
+{divide} { return DIVIDE;}
+{mod} { return REMAINDER;}
+{pow} { return POW;}
+{parantOpen} { return PARANT_OPEN;}
+{parantClose} { return PARANT_CLOSE;}
+{curlyOpen} { return CURLY_OPEN;}
+{curlyClose} { return CURLY_CLOSE;}
+{arrBrackOpen} { return ARR_BRACK_OPEN;}
+{arrBrackClose} { return ARR_BRACK_CLOSE;}
+{constIntKeyword} { return INT_CONST}
+{stringOpenOrClose} { return STRING_OPEN_OR_CLOSE;}
+{stringConst} { return STRING_CONST;}
+{comment} { return COMMENT;}
+{newLine} { return NEWLINE;}
+{comma} { return COMMA;}
+{intKeyword} { return LET_INT;}
+{stringKeyword} { return LET_STRING;}
+{arrKeyword} { return LET_LIST;}
+{arraySizeSpecifier} { return LIST_SIZE_SPECIFIER;}
+{varName} { return VAR_NAME;}
 %%
