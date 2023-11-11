@@ -58,7 +58,7 @@ cond_statement: if_statement
         | Else_if_statement
         | Else_statement {lineNo = 4; printf("cond_statement");};
 
-if_statement: IF PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 5; printf("if_statement");};
+if_statement: IF PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 5; printf("if_statement");};
 Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE{lineNo = 6; printf("Else_if_statement");};
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
         |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 7; printf("if_statement");};
@@ -69,9 +69,9 @@ loop: for_loop | while_loop {lineNo = 8; printf("loop");};
 for_loop: FOR PARANT_OPEN single_statement conditions SEMICOL Do_In_Loops PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE  {lineNo = 9; printf("for_loop");};
 while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 10; printf("while_loop");};
 
-conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {lineNo = 11; printf("conditions");};
+//conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {lineNo = 11; printf("conditions");};
 
-single_statement: varDeclaration SEMICOL  printf("var_declaration_single_statement");
+single_statement: varDeclaration SEMICOL  {printf("var_declaration_single_statement");}
         | var_Assign SEMICOL { printf("var_Assign");}
         | CONST_Int_Dec_Assign SEMICOL
 	| arr_Dec_init SEMICOL
@@ -81,7 +81,16 @@ single_statement: varDeclaration SEMICOL  printf("var_declaration_single_stateme
         | readCall_sc SEMICOL
         | print_line_st SEMICOL {lineNo = 12; printf("print_line_st");};
 
-varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER  printf("var_declaration");
+single_statement_without_semicol:  varDeclaration
+        | var_Assign { printf("var_Assign");}
+        | CONST_Int_Dec_Assign
+        | VAR_NAME expr VAR_NAME
+        | VAR_NAME expr NUMBER 
+        | NUMBER expr NUMBER
+        | NUMBER expr VAR_NAME;
+
+
+varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER  {printf("var_declaration");}
 	|  LET_INT VAR_NAME ASSIGNMENT VAR_NAME
         | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST {lineNo = 13; printf("var_declaration");};
 
@@ -112,42 +121,55 @@ parameters: LET_INT VAR_NAME COMMA parameters
 		| LET_STRING VAR_NAME COMMA parameters
                 | /* empty parameter token*/ {} {lineNo = 21; printf("parameters");};
 
-expr: arithmetic_ops
-        | bool_OPS
-        | comparison {lineNo = 22; printf("expr");};
-
-arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
-                  | VAR_NAME arithmetic_op NUMBER
-		|NUMBER arithmetic_op NUMBER {lineNo = 23; printf("arithmetic_ops");};
-
-arithmetic_op: PLUS
-        | SUBTRACT
-        | MULTIPLY
-        | DIVIDE
-        | REMAINDER
-        | POW {lineNo = 24; printf("arithmetic_op");};
-
-comparison: VAR_NAME compare VAR_NAME
-                | VAR_NAME compare NUMBER
-		| NUMBER compare NUMBER 
-                | NUMBER compare VAR_NAME {lineNo = 25; printf("comparison");};
-
-compare: SMALLER
+expr:    NOT
+        | OR
+        | AND
+        | XOR
+        | SMALLER
         | SMALLER_EQUAL
         | LARGER
         | LARGER_EQUAL
         | EQUALS
-        | NOT_EQUALS {lineNo = 26; printf("compare");};
+        | NOT_EQUALS
+        | PLUS
+        | SUBTRACT
+        | MULTIPLY
+        | DIVIDE
+        | REMAINDER
+        | POW {lineNo = 22; printf("expr");};
 
-bool_OPS:  VAR_NAME bool_OP VAR_NAME
-                | VAR_NAME bool_OP NUMBER
-		| NUMBER bool_OP NUMBER
-                | NUMBER bool_OP VAR_NAME {lineNo = 27; printf("bool_OPS");};
+//arithmetic_ops: VAR_NAME arithmetic_op VAR_NAME
+//                  | VAR_NAME arithmetic_op NUMBER
+//		|NUMBER arithmetic_op NUMBER {lineNo = 23; printf("arithmetic_ops");};
 
-bool_OP: NOT
-        | OR
-        | AND
-        | XOR {lineNo = 27; printf("bool_OP");};
+//arithmetic_op: PLUS
+//        | SUBTRACT
+//        | MULTIPLY
+//        | DIVIDE
+//        | REMAINDER
+//        | POW {lineNo = 24; printf("arithmetic_op");};
+
+//comparison: VAR_NAME compare VAR_NAME
+//                | VAR_NAME compare NUMBER
+//		| NUMBER compare NUMBER 
+//                | NUMBER compare VAR_NAME {lineNo = 25; printf("comparison");};
+
+//compare: //SMALLER
+//        | SMALLER_EQUAL
+//        | LARGER
+//        | LARGER_EQUAL
+//        | EQUALS
+//        | NOT_EQUALS {lineNo = 26; printf("compare");};
+
+//bool_OPS:  VAR_NAME bool_OP VAR_NAME
+//                | VAR_NAME bool_OP NUMBER
+//		| NUMBER bool_OP NUMBER
+//                | NUMBER bool_OP VAR_NAME {lineNo = 27; printf("bool_OPS");};
+
+//bool_OP: NOT
+//        | OR
+//        | AND
+//        | XOR {lineNo = 27; printf("bool_OP");};
 
 comment_st: COMMENT STRING_INNER_STATEMENT COMMENT {lineNo = 28; printf("comment_st");};
 
