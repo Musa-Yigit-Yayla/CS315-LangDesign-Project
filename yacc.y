@@ -59,15 +59,15 @@ cond_statement: if_statement
         | Else_statement {lineNo = 4; printf("cond_statement");};
 
 if_statement: IF PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 5; printf("if_statement");};
-Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE{lineNo = 6; printf("Else_if_statement");};
+Else_if_statement: if_statement ELSE_IF PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE{lineNo = 6; printf("Else_if_statement");};
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
         |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 7; printf("if_statement");};
 
 // loops
 loop: for_loop | while_loop {lineNo = 8; printf("loop");};
 
-for_loop: FOR PARANT_OPEN single_statement conditions SEMICOL Do_In_Loops PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE  {lineNo = 9; printf("for_loop");};
-while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 10; printf("while_loop");};
+for_loop: FOR PARANT_OPEN single_statement single_statement_without_semicol SEMICOL Do_In_Loops PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE  {lineNo = 9; printf("for_loop");};
+while_loop: WHILE PARANT_OPEN single_statement_without_semicol PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 10; printf("while_loop");};
 
 //conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {lineNo = 11; printf("conditions");};
 
