@@ -1,3 +1,6 @@
+//Maryam Azimli
+//Musa Yiğit Yayla
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
