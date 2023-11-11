@@ -128,8 +128,9 @@ arithmetic_op: PLUS
         | POW {lineNo = 24; printf("arithmetic_op");};
 
 comparison: VAR_NAME compare VAR_NAME
-                  | VAR_NAME compare NUMBER
-		|NUMBER compare NUMBER {lineNo = 25; printf("comparison");};
+                | VAR_NAME compare NUMBER
+		| NUMBER compare NUMBER 
+                | NUMBER compare VAR_NAME {lineNo = 25; printf("comparison");};
 
 compare: SMALLER
         | SMALLER_EQUAL
@@ -139,8 +140,9 @@ compare: SMALLER
         | NOT_EQUALS {lineNo = 26; printf("compare");};
 
 bool_OPS:  VAR_NAME bool_OP VAR_NAME
-                | VAR_NAME bool_OP NUMBER;
-		| NUMBER bool_OP NUMBER {lineNo = 27; printf("bool_OPS");};
+                | VAR_NAME bool_OP NUMBER
+		| NUMBER bool_OP NUMBER
+                | NUMBER bool_OP VAR_NAME {lineNo = 27; printf("bool_OPS");};
 
 bool_OP: NOT
         | OR
