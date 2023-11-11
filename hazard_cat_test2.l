@@ -138,7 +138,7 @@ arrDec (({arrKeyword})({mandBlank})({arrName})({optionalNewOrBlank})({statementE
 {arrKeyword} {return LET_LIST;}
 {arraySizeSpecifier} {return LIST_SIZE_SPECIFIER;}
 {varName} {return VAR_NAME;}
-{stringInnerStatement} {return STRING_INNER_STATEMENT}
+{stringInnerStatement} {return STRING_INNER_STATEMENT;}
 %%
 
 int yywrap(void) {

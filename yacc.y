@@ -57,16 +57,15 @@ cond_statement: if_statement
         | Else_if_statement
         | Else_statement {printf("cond_statement");};
 
-if_statement: IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
-Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE SEMICOL CURLY_OPEN statements CURLY_CLOSE{printf("Else_if_statement");};
+if_statement: IF PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
+Else_if_statement: if_statement ELSE_IF PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE{printf("Else_if_statement");};
 Else_statement: if_statement ELSE CURLY_OPEN statements CURLY_CLOSE
         |Else_if_statement ELSE CURLY_OPEN statements CURLY_CLOSE {printf("if_statement");};
 
 // loops
 loop: for_loop | while_loop {printf("loop");};
 
-for_loop: FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT NUMBER SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE 
-| FOR PARANT_OPEN LET_INT VAR_NAME ASSIGNMENT VAR_NAME SEMICOL conditions SEMICOL Do_In_Loops CURLY_OPEN statements CURLY_CLOSE {printf("for_loop");};
+for_loop: FOR PARANT_OPEN single_statement conditions SEMICOL Do_In_Loops PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE  {printf("for_loop");};
 while_loop: WHILE PARANT_OPEN conditions PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {printf("while_loop");};
 
 conditions: VAR_NAME expr VAR_NAME | VAR_NAME expr NUMBER | NUMBER expr NUMBER {printf("conditions");};
@@ -86,8 +85,8 @@ varDeclaration: LET_INT VAR_NAME ASSIGNMENT NUMBER
         | LET_STRING VAR_NAME ASSIGNMENT STRING_CONST {printf("var_declaration");};
 
 var_Assign: VAR_NAME assing_ops VAR_NAME
-		|VAR_NAME assing_ops NUMBER
-		|VAR_NAME assing_ops STRING_CONST {printf("var_Assign");};
+		| VAR_NAME assing_ops NUMBER
+		| VAR_NAME assing_ops STRING_CONST {printf("var_Assign");};
 
 CONST_Int_Dec_Assign: CONST VAR_NAME ASSIGNMENT VAR_NAME|
 		CONST VAR_NAME ASSIGNMENT NUMBER {printf("CONST");};
@@ -109,7 +108,8 @@ func_def: FUNC VAR_NAME PARANT_OPEN parameters PARANT_CLOSE CURLY_OPEN statement
 
 
 parameters: LET_INT VAR_NAME COMMA parameters
-		| LET_STRING VAR_NAME COMMA parameters {printf("parameters");};
+		| LET_STRING VAR_NAME COMMA parameters
+                | /* empty parameter token*/ {} {printf("parameters");};
 
 expr: arithmetic_ops
         | bool_OPS
@@ -161,7 +161,7 @@ insideOFList: VAR_NAME COMMA insideOFList
 
 Do_In_Loops: incremention
         | decremention 
-        | expr {printf("Do_In_Loops");};
+        | var_Assign {printf("Do_In_Loops");};
 
 incremention: VAR_NAME INCREMENT 
         | INCREMENT VAR_NAME {printf("incremention");};
@@ -174,7 +174,7 @@ assing_ops: PLUS_ASSIGN
         | DIVIDE_ASSIGN
         | REMAINDER_ASSIGN
         | MULTIPLY_ASSIGN
-        |ASSIGNMENT {printf("assing_ops");};
+        | ASSIGNMENT {printf("assing_ops");};
 
 
 %%
