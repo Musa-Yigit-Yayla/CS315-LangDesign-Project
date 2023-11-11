@@ -44,16 +44,17 @@
 
 program: MAIN PARANT_OPEN PARANT_CLOSE CURLY_OPEN statements CURLY_CLOSE {lineNo = 1; printf("program\n");};
 
-statements: statement | statement statements {lineNo = 2; printf("statements\n");};
+statements: statement | statement empty_line | statement statements {lineNo = 2; printf("statements\n");};
+
 
 statement: cond_statement
 		| loop
 		| single_statement
         	| func_call
 		| func_def
-		| comment_st 
-                | NEWLINE {lineNo = 3; printf("statement");};
+		| comment_st {lineNo = 3; printf("statement");};
 
+empty_line: NEWLINE | /* empty */;
 //conditionals
 cond_statement: if_statement
         | Else_if_statement
