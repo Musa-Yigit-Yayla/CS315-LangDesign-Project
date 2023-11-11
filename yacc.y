@@ -32,6 +32,7 @@
 %token PRINT PRINT_LINE
 %token COMMENT
 %token ARR_BRACK_OPEN ARR_BRACK_CLOSE STRING_OPEN_OR_CLOSE STRING_CONST
+%token STRING_INNER_STATEMENT
 %token MAIN
 %nonassoc ELSE_IF ELSE
 
@@ -97,7 +98,7 @@ print_line_st: PRINT_LINE {printf("print_line_st");};
 
 //scanner
 readCall_sc: READ READ_OP NUMBER
-	|READ READ_OP STRING_CONST {printf("readCall_sc");};
+	|READ READ_OP STRING_INNER_STATEMENT {printf("readCall_sc");};
 
 
 // functions
@@ -145,7 +146,7 @@ bool_OP: NOT
         | AND
         | XOR {printf("bool_OP");};
 
-comment_st: COMMENT STRING_CONST COMMENT {printf("comment_st");};
+comment_st: COMMENT STRING_INNER_STATEMENT COMMENT {printf("comment_st");};
 
 //arrays
 arr_Dec_init: LET_LIST VAR_NAME ASSIGNMENT CURLY_OPEN insideOFList CURLY_CLOSE {printf("arr_Dec_init");};
